@@ -45,6 +45,12 @@ function GetConfig()
 			'name' => 'Lua', 
 			'categories' => array(
 				array(
+					'mdi' => 'mdi-database',
+					'name' => 'Game Systems',
+					'path' => 'lua/systems',
+					'tags' => 'true',
+				),
+				array(
 					'mdi' => 'mdi-code-braces',
 					'name' => 'Globals',
 					'path' => 'lua/globals',

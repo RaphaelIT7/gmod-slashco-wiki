@@ -1,6 +1,6 @@
 <function name="EnableGlobalFog" parent="SlashCo" type="libraryfunc">
 	<description>
-		Enables the <page name="Global Fog">Fog</page>
+		Enables the <page text="Global Fog">Fog</page>
 	</description>
-	<realm>Server</realm>
+	<realm>Shared</realm>
 </function>

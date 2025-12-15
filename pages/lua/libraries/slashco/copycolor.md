@@ -2,7 +2,7 @@
 	<description>
 		Returns a copy of the given Color allowing you to safely modify it.
 	</description>
-	<realm>Server</realm>
+	<realm>Shared</realm>
 	<args>
 		<arg name="color" type="Color">The color to copy</arg>
 	</args>
