@@ -5,6 +5,7 @@ function GetConfig()
 	'name' => "SlashCo Wiki", 
 	'front_page' => 'gmod.md',
 	'missing_page' => 'missing.md',
+	'cache_page' => 'cache.md',
 	'pages_path' => 'pages/',
 	'issues_url' => 'https://github.com/RaphaelIT7/SlashCo/issues/',
 	'code_language' => 'lua', // lua or c++
@@ -13,6 +14,7 @@ function GetConfig()
 	'next_version' => 0,
 	'description' => 'Welcome to the SlashCo Wiki.&#xA;Here you will find the Lua documentation of SlashCo.&#xA;',
 	'xampp' => str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"),
+	'realm' => 'gmod',
 	'categories' => array(
 		array(
 			'name' => 'Basics', 

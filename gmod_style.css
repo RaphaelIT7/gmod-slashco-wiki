@@ -34,13 +34,14 @@ html > body > .body > .content {
   flex-grow: 1;
   flex-direction: column;
   width: 100%;
-  background-color: #fff;
+  background-color: #111111;
 }
 html > body > .body > .content .content {
   flex-grow: 1;
   padding: 32px;
   padding-top: 0;
   transition: all ease-out 0.13s;
+  background-color: #111111;
 }
 html > body > .body > .content .content.loading {
   opacity: 0.4;
@@ -50,9 +51,10 @@ html > body > .body > .content > .footer {
   padding: 32px;
   font-size: 11px;
   color: #777;
+  background-color: #111111;
 }
 html > body > .body > .footer {
-  background-color: #fff;
+  background-color: #111111;
 }
 html > body > .footer {
   padding: 30px;
@@ -318,7 +320,7 @@ hr {
 }
 
 .markdown > .function .function_line {
-  background-color: #e6e6e6;
+  background-color: #222222;
   font-family: monospace;
   padding: 16px 20px;
   border-radius: 8px;
@@ -368,7 +370,7 @@ hr {
   font-weight: bold;
 }
 .markdown > .function .function_arguments .default, .markdown > .function .function_returns .default {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(200, 200, 200, 0.4);
   padding: 2px;
 }
 .markdown > .function.realm-server .function_line .realm_icon {
@@ -746,7 +748,7 @@ hr {
   font-family: monospace;
   font-size: 11px;
   margin-bottom: 8px;
-  color: #1d1d1d;
+  color: #7d7d7d;
 }
 .member_line span.keyword, .member_line a.type {
   color: #777dbb !important;
@@ -841,7 +843,7 @@ hr {
 .markdown {
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
-  color: #555;
+  color: #999;
   word-break: break-word;
   overflow-x: hidden;
 }
@@ -1087,6 +1089,9 @@ hr {
 }
 .markdown div.callback_args .numbertag {
   background-color: #a9a9a9;
+}
+.markdown div.description_section {
+  padding-top: 2px;
 }
 
 #sidebar a.intrn:after {
@@ -26823,7 +26828,7 @@ h1, h2, h3, h4, h5 {
 }
 
 html {
-  background-image: url(https://files.facepunch.com/garry/64338533-c1c7-47ad-bf1e-73cefab12684.png);
+  background-image: url(https://images.steamusercontent.com/ugc/2037368018116025183/E890F540F874DFAEEF81ACEAED8D091FA0D37F5E/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false);
   background-attachment: fixed;
   background-size: cover;
   background-position: center top;

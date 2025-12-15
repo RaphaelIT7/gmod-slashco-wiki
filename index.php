@@ -30,6 +30,12 @@
 		} else if ($contentType == 'text/css') {
 			readfile("gmod_style.css");
 		} else if ($contentType == 'text/javascript') {
+			if (str_contains($_SERVER['REQUEST_URI'], 'serviceworker')) {
+				header("Content-Type: application/javascript");
+				readfile("serviceworker.js");
+				exit(0);
+			}
+
 			readfile("gmod_script.js");
 		}
 		exit(0);
@@ -72,6 +78,74 @@
 		}
 	}
 
+	if (strcmp($currentPage, "api/check_version") == 0)
+	{
+		// ToDo: HolyLib provides three headers we can use to check their version. HolyLib_Branch | HolyLib_RunNumber | HolyLib_Version
+		header("Content-Type: text/plain");
+		echo(json_encode(array(
+			'status' => 'ok',
+		)));
+		return;
+	}
+
+	function CreateJSONResponse($wikiName, $wikiIcon, $wikiRealm, $sqlPage)
+	{
+		return [
+			"title" => $sqlPage['title'],
+			"wikiName" => $wikiName,
+			"wikiIcon" => $wikiIcon,
+			"wikiUrl" => $wikiRealm,
+			"tags" => isset($sqlPage['tags']) ? $sqlPage['tags'] : null,
+			"address" => $sqlPage['address'],
+			"createdTime" => isset($sqlPage['createdTime']) ? $sqlPage['createdTime'] : null,
+			"updateCount" => $sqlPage['updateCount'],
+			"markup" => isset($sqlPage['tags']) ? $sqlPage['tags'] : null,
+			"html" => $sqlPage['html'],
+			"footer" => "Page views: " . $sqlPage['views'] . "<br>Updated: " . $sqlPage['updated'],
+			"revisionId" => $sqlPage['revisionId'],
+			"pageLinks" => [
+				[
+					"url" => $sqlPage['address'],
+					"label" => "View",
+					"icon" => "file",
+					"description" => ""
+				],
+				[
+					"url" => $sqlPage['address'] . "~edit",
+					"label" => "Edit",
+					"icon" => "pencil",
+					"description" => ""
+				],
+				[
+					"url" => $sqlPage['address'] . "~history",
+					"label" => "History",
+					"icon" => "history",
+					"description" => ""
+				]
+			]
+		];
+	}
+
+	if (strcmp($currentPage, "api/getAllPages") == 0)
+	{
+		header("Content-Type: text/plain");
+		$outJson = [];
+		$allPages = $MySQL->GetAllPages();
+		foreach ($allPages as $page) {
+			$outJson[] = CreateJSONResponse($config['name'], $config['icon'], $config['realm'], $page);
+		}
+		echo json_encode($outJson);
+		return;
+	}
+
+	# We just modify the gmod_script.js to remove the modification in UpdatePage
+	#if (str_starts_with($currentPage, $config['realm'] . '/'))
+	#	$currentPage = substr($currentPage, strlen($config['realm']) + 1);
+
+	$lastupdate = $MySQL->GetCacheTime('lastupdate');
+	header('Cache-Control: public, max-age=3600, stale-while-revalidate=86400');
+	header('ETag: ' . $lastupdate);
+
 	$currentSQLPage = $MySQL->GetFullPage($currentPage);
 	$title = isset($currentSQLPage) ? $currentSQLPage['title'] : null;
 	if (!isset($title))
@@ -85,7 +159,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title><?php echo $title; ?> - <?php echo $config['name']; ?></title>
-		<link rel="icon" type="image/png" href="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png">
+		<link rel="icon" type="image/png" href="https://images.steamusercontent.com/ugc/41201780382830786/EA228BC4A00E140DF55435BAD3ED2DCA836770D3/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true">
 		<link rel="search" title="<?php echo $config['name']; ?>" type="application/opensearchdescription+xml" href="https://wiki.facepunch.com/gmod/~searchmanifest" />
 		<script href="https://wiki.facepunch.com/cdn-cgi/apps/head/JodREY1zTjWBVnPepvx61z0haaQ.js"></script>
 		<link rel="stylesheet" href="gmod_style.css"/>
@@ -96,8 +170,11 @@
 		<meta property="og:title" name="og:title" content="<?php echo $config['name']; ?>">
 		<meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
 		<meta property="og:type" name="og:type" content="website">
-		<meta property="og:description" name="og:description" content="<?php echo $config['description']; ?>">
-		<script>WikiRealm = "gmod";</script>
+		<meta property="og:description" name="og:description" content="<?php echo htmlspecialchars(isset($currentSQLPage) ? $currentSQLPage['description'] : $config['description'], ENT_QUOTES | ENT_HTML5, 'UTF-8'); ?>">
+		<script>
+			WikiRealm = "<?php echo $config['realm']; ?>";
+			WikiLastUpdated = "<?php echo $lastupdate; ?>";
+		</script>
 	</head>
 	<body>
 		<div id="toolbar">
@@ -168,7 +245,7 @@
 				<div id="ident">
 					<div class="icon">
 						<a href="/">
-							<img src="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png" />
+							<img src="https://images.steamusercontent.com/ugc/41201780382830786/EA228BC4A00E140DF55435BAD3ED2DCA836770D3/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" />
 						</a>
 					</div>
 					<h1 class="title">
@@ -193,6 +270,7 @@
 			</div>
 		</div>
 		<script>
+			var SeenResults = new Set();
 			function InitSearch() {
 				SearchInput = document.getElementById("search");
 				SearchResults = document.getElementById("searchresults");
@@ -203,7 +281,7 @@
 				});
 			}
 			// We removed enter. (We don't support it yet.)
-			function AddSearchTitle() {
+			function AddSearchTitle(skipHref = null) {
 				if (Titles.length == 0)
 					return;
 				if (SectionHeader != null) {
@@ -213,8 +291,17 @@
 				}
 				for (var i = 0; i < Titles.length; i++) {
 					var cpy = Titles[i].cloneNode(true);
-					if (cpy.href)
-						cpy.onclick = e => location.replace(cpy.href);
+					var href = cpy.href || null;
+					if (skipHref != null && href === skipHref)
+						continue;
+					if (href) {
+						const targetHref = href;
+						cpy.addEventListener('click', e => {
+							e.preventDefault();
+							Navigate.ToPage(targetHref, true);
+							return false;
+						});
+					}
 					cpy.className = "node" + ((TitleCount - Titles.length) + i);
 					SearchResults.appendChild(cpy);
 				}
@@ -265,14 +352,30 @@
 								});
 							}
 							if (found) {
-								if (ResultCount < MaxResultCount) {
-									AddSearchTitle();
-									var copy = child.cloneNode(true);
-									copy.onclick = e => location.replace(cpy.href);
-									copy.classList.add("node" + TitleCount);
-									SearchResults.appendChild(copy);
+								var dedupKey = txt || child.href || child.innerText || null;
+								var shouldAdd = true;
+								if (dedupKey && SeenResults.has(dedupKey)) {
+									shouldAdd = false;
+								} else if (dedupKey) {
+									SeenResults.add(dedupKey);
 								}
-								ResultCount++;
+								if (shouldAdd) {
+									if (ResultCount < MaxResultCount) {
+										AddSearchTitle(child.href || null);
+										var copy = child.cloneNode(true);
+										if (copy.href) {
+											const targetHref = copy.href;
+											copy.addEventListener('click', e => {
+												e.preventDefault();
+												Navigate.ToPage(targetHref, true);
+												return false;
+											});
+										}
+										copy.classList.add("node" + TitleCount);
+										SearchResults.appendChild(copy);
+									}
+									ResultCount++;
+								}
 							}
 						}
 					}
@@ -321,6 +424,7 @@
 				Titles = [];
 				TitleCount = 0;
 				SectionHeader = null;
+				SeenResults = new Set();
 				if (string.toUpperCase() == string && string.indexOf("_") != -1) {
 					string = string.substring(0, string.indexOf("_"));
 				}
@@ -357,8 +461,133 @@
 				active[0].scrollIntoView( { smooth: true, block: "center" } );
 			}
 
+			const PageDB = (() => {
+				function openDB() {
+					return new Promise((resolve, reject) => {
+						const request = indexedDB.open('wikiCache', 1);
+						request.onupgradeneeded = e => {
+							const db = e.target.result;
+							if (!db.objectStoreNames.contains('pages'))
+								db.createObjectStore('pages', { keyPath: 'address' });
+						};
+						request.onsuccess = e => resolve(e.target.result);
+						request.onerror = e => reject(e.target.error);
+					});
+				}
+
+				async function savePage(address, json, version) {
+					const db = await openDB();
+					return new Promise((resolve, reject) => {
+						const tx = db.transaction('pages', 'readwrite');
+						tx.objectStore('pages').put({ address, json, version });
+						tx.oncomplete = () => resolve();
+						tx.onerror = e => reject(e.target.error);
+					});
+				}
+
+				async function getPage(address) {
+					const db = await openDB();
+					return new Promise((resolve, reject) => {
+						const tx = db.transaction('pages', 'readonly');
+						const req = tx.objectStore('pages').get(address);
+						req.onsuccess = e => resolve(e.target.result);
+						req.onerror = e => reject(e.target.error);
+					});
+				}
+
+				return { savePage, getPage };
+			})();
+
+			async function PreloadAllPages() {
+				const storedLastUpdated = localStorage.getItem("wiki_lastupdated");
+				if (storedLastUpdated === WikiLastUpdated) {
+					console.log("Preload skipped – cache is already up to date.");
+					return;
+				}
+				localStorage.setItem("wiki_lastupdated", WikiLastUpdated);
+
+				try {
+					const response = await fetch('/api/getAllPages');
+					if (!response.ok)
+						return;
+
+					const pages = await response.json();
+					if (!Array.isArray(pages))
+						return;
+
+					for (const page of pages) {
+						if (!page.address)
+							continue;
+
+						await PageDB.savePage(page.address, page, page.updateCount);
+					}
+
+					console.log(`Cached ${pages.length} pages successfully!`);
+				} catch (err) {
+					console.error('Error preloading pages:', err);
+				}
+			}
+
+			navigator.serviceWorker.register('/serviceworker.js');
+			//	.then(reg => console.log('Service Worker registered:', reg.scope))
+			//	.catch(err => console.error('Service worker registration failed:', err));
+
+			const PageCache = {
+				async AddCachePage(address, json) {
+					await PageDB.savePage(address, json, json.updateCount);
+					console.log('Cached page:', address, 'version:', json.updateCount);
+				},
+			};
+
+			Navigate.AddCachePage = PageCache.AddCachePage;
+			// We don't change GetCachePage since our service worker catches and handles the request / it never leaves the network.
+
+			(function() {
+				const pendingPreloadTimers = new Map();
+				document.addEventListener("mouseover", (e) => {
+					const address = e.target.closest("a[href]")?.getAttribute("href");
+					if (!address || !address.startsWith("/") || address.endsWith("~edit") || address.endsWith("~history"))
+						return;
+
+					if (Navigate.GetCachePage(address) || Navigate.preloadPending?.has(address) || pendingPreloadTimers.has(address))
+						return;
+
+					const timer = setTimeout(() => {
+						pendingPreloadTimers.delete(address);
+
+						Navigate.preloadPending = Navigate.preloadPending ? Navigate.preloadPending : new Set();
+						Navigate.preloadPending.add(address);
+						fetch(address + "?format=json")
+							.then(r => r.text())
+							.then(text => {
+								if (text.startsWith("<"))
+									return;
+
+								Navigate.AddCachePage(address, JSON.parse(text));
+								Navigate.preloadPending.delete(address);
+							})
+							.catch(() => {
+								Navigate.preloadPending.delete(address);
+							});
+					}, 100); // 100 ms - if you hovered over an url for > 100 ms it'll be preloaded
+
+					pendingPreloadTimers.set(address, timer);
+				});
+
+				document.addEventListener("mouseout", (e) => {
+					const address = e.target.closest("a[href]")?.getAttribute("href");
+					if (!address || !pendingPreloadTimers.has(address))
+						return;
+
+					clearTimeout(pendingPreloadTimers.get(address));
+					pendingPreloadTimers.delete(address);
+				});
+			})();
+
 			InitSearch();
 			Navigate.Install();
+
+			PreloadAllPages();
 		</script>
 	</body>
 </html>
@@ -369,40 +598,7 @@
 	} elseif ($_GET["format"] === 'html') {
 		echo $MySQL->GetHTML($currentPage);
 	} elseif ($_GET["format"] === 'json') {
-echo '{
-	"title": "' . $title .'",
-	"wikiName": "' . $config['name'] . '",
-	"wikiIcon": "' . $config['icon'] . '",
-	"wikiUrl": "gmod",
-	"tags": "' . $MySQL->GetSearchTags($currentPage) . '",
-	"address": ' . json_encode($currentPage) . ',
-	"createdTime": "2020-01-21T17:09:42.1+00:00",
-	"updateCount": ' . $MySQL->GetUpdateCount($currentPage) . ',
-	"markup":' . json_encode($MySQL->GetMarkup($currentPage)) . ',
-	"html":' . json_encode($MySQL->GetHTML($currentPage)) . ',
-	"footer": "Page views: ' . $MySQL->GetIncreasedViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
-	"revisionId": ' . $MySQL->GetRevision($currentPage) . ',
-	"pageLinks":[
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'",
-			"label":"View",
-			"icon":"file",
-			"description":""
-		},
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~edit",
-			"label":"Edit",
-			"icon":"pencil",
-			"description":""
-		},
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~history",
-			"label":"History",
-			"icon":"history",
-			"description":""
-		}
-	]
-}';
+		echo json_encode(CreateJSONResponse($config['name'], $config['icon'], $config['realm'], $currentSQLPage));
 	}
 
 	endif;

@@ -431,7 +431,6 @@
 		{
 			$content = $this->OpenFile($file);
 			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
-				echo '<p>Match: ' . $matches[1] . ' - ' . $this->FindFile($matches[1]) . '</p>';
 				return $this->FindFile($matches[1]);
 			}
 
@@ -455,12 +454,23 @@
 					if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 						$args = '';
 						foreach ($func['args'] as $arg) {
-							if (!str_ends_with($args, ',') && $args !== '')
+							if (!str_ends_with($args, ', ') && $args !== '')
 							{
-								$args .= ',';
+								$args .= ', ';
 							}
 
-							$args .= ' ' . '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+							$argParts = explode('|', $arg['type']);
+							$totalParts = count($argParts);
+							foreach ($argParts as $index => $argPart)
+							{
+								$args .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								if($index !== $totalParts - 1)
+								{
+									$args .= ' or ';
+								}
+							}
+
+							$args .= ' ' . $arg['name'];
 
 							if (isset($arg['default']) && $arg['default'] !== '')
 							{
@@ -472,7 +482,7 @@
 						foreach ($func['rets'] as $ret) {
 							if (!str_ends_with($rets, ',') && $rets !== '')
 							{
-								$rets .= ',';
+								$rets .= ', ';
 							}
 
 							$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
@@ -483,7 +493,7 @@
 							#}
 						}
 
-						$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
+						$html .= $rets . ' ' . $this->getFunctionName($func) . '( ' . $args .' )';
 					} else {
 						$html .= ' ' . $this->getFunctionName($func) . (($func['type'] == 'libraryfield') ? (isset($func['value']) ? (" = " . $func['value']) : '') : "()");
 					}
@@ -528,8 +538,18 @@
 						$i = $i + 1;
 						$html .='<div>';
 							$html .= '<span class="numbertag">' . $i . '</span>';
-							$html .= '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
-							$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+							$argParts = explode('|', $arg['type']);
+							$totalParts = count($argParts);
+							foreach ($argParts as $index => $argPart)
+							{
+								$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								if($index === $totalParts - 1)
+								{
+									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+								} else {
+									$html .= ' or ';
+								}
+							}
 							if(isset($arg['default']) && $arg['default'] != '') {
 								$html .= '<span class="default"> = ' . $arg['default'] . '</span>';
 							}
@@ -575,7 +595,7 @@
 				#$html .= '<div class="section">';
 				#	$html .= $this->text($type['summ']);
 				#$html .= '</div>';
-				if ($type['is'] == 'convar')
+				if ($type['is'] == 'convar' || $type['is'] == 'config')
 				{
 					$html .= '</div>';
 					return $html;
@@ -1141,6 +1161,15 @@
 			return $ret;
 		}
 
+		function description($text)
+		{
+			if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
+				return strip_tags($this->text($matches[1], true));
+			}
+
+			return 'No description? Have a cookie :3';
+		}
+
 		// preView is used in things like page lists, were we don't want to display notes.
 		function text($text, $preView = false)
 		{
@@ -1153,7 +1182,12 @@
 			}
 
 			$text = implode("\n", $lines);
-			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
+			if ($preView)
+			{
+				$text = preg_replace('/`(.*?)`/', '$1', $text);
+			} else {
+				$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
+			}
 			$sourceText = $text;
 
 			/*
@@ -1287,7 +1321,7 @@
 
 			$replaceCall(
 				'/<code\s+language="([^"]+)">([\s\S]*?)<\/code>/',
-				function ($match){
+				function ($match) {
 					return $this->buildCode(trim($match[2]), $match[1]);
 				}
 			);
