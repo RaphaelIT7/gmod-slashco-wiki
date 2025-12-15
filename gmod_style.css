@@ -959,7 +959,7 @@ hr {
   margin-bottom: 22px;
 }
 .markdown .struct .member .struct_anchor_link, .markdown .struct .parameter .struct_anchor_link, .markdown .shader .member .struct_anchor_link, .markdown .shader .parameter .struct_anchor_link {
-  color: #555;
+  color: #888;
 }
 .markdown .numbertag {
   background-color: #7d7d7d;

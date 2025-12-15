@@ -1,9 +1,9 @@
 <?php
 	class MySQL {
 		private $servername = "localhost";
-		private $username = "holylib"; # locahost only user :^
-		private $password = "holylibiscool";
-		private $db = "holylib_wiki";
+		private $username = "slashco"; # locahost only user :^
+		private $password = "slashcoiscool";
+		private $db = "slashco_wiki";
 		private $conn;
 
 		private function Connect() {
