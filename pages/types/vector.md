@@ -2,4 +2,4 @@
 
 A Vector.
 
-See: https://wiki.facepunch.com/gmod/Vector
+See the GMod Wiki: <link url="https://wiki.facepunch.com/gmod/Vector">Vector</link>

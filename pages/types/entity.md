@@ -2,4 +2,4 @@
 
 A gmod entity.
 
-See: https://wiki.facepunch.com/gmod/Entity
+See the GMod Wiki: <link url="https://wiki.facepunch.com/gmod/Entity">Entity</link>

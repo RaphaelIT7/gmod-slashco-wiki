@@ -1,3 +1,3 @@
 <title>CRecipientFilter</title>
 
-See: https://wiki.facepunch.com/gmod/CRecipientFilter
+See the GMod Wiki: <link url="https://wiki.facepunch.com/gmod/CRecipientFilter">CRecipientFilter</link>

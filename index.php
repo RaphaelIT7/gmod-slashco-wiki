@@ -61,6 +61,9 @@
 	$Parsedown = new Extension();
 	$Parsedown->config = $config;
 	$Parsedown->categories = $categories;
+	$Parsedown->sql = $MySQL;
+
+	FileSystem::Init($Parsedown);
 
 	$Importer = new Importer();
 	$Importer->Init($MySQL, $Parsedown);

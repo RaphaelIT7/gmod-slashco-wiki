@@ -2,4 +2,4 @@
 
 A Color.
 
-See: https://wiki.facepunch.com/gmod/Color
+See the GMod Wiki: <link url="https://wiki.facepunch.com/gmod/Color">Color</link>

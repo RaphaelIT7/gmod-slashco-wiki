@@ -2,4 +2,4 @@
 
 A lua table.
 
-See: https://wiki.facepunch.com/gmod/table
+See the GMod Wiki: <link url="https://wiki.facepunch.com/gmod/table">table</link>
