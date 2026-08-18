@@ -98,6 +98,12 @@ function GetConfig()
 					'path' => 'lua/commands',
 					'tags' => 'true',
 				),
+				array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'lua/enums',
+					'tags' => 'true',
+				),
 			),
 		),
 	)

@@ -34,94 +34,14 @@
 			'wchar_t', 'while', 'xor', 'xor_eq'
 		);
 
-		#
-		# Utilities
-		#
-		// Unlike the other function, this one guesses the page so it could return wrong results.
-		function FindFileMatch($file, $match) {
-			$file = $this->SafeLink($file);
-			$file = strtolower($file);
-			$file = str_replace('.', '_', $file);
-			$match = strtolower($match);
-
-			if ($this->config['xampp'])
-			{
-				$file = str_replace('/:', ':', $file); // Apache hates it
-			}
-
-			$file = str_replace(':', '_', $file);
-			foreach($this->categories as &$category) {
-				foreach ($category['categories'] as &$chapter) {
-					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
-					$path = $shortpath  . $file . '.md';
-
-					if (!file_exists($shortpath)) {
-						continue;
-					}
-
-					$files = array_diff(scandir($shortpath), array('..', '.'));
-					foreach($files as $file2) {
-						if (is_dir($shortpath . $file2)) {
-							$files2 = array_diff(scandir($shortpath . $file2), array('..', '.'));
-							foreach($files2 as $file3) {
-								if (str_contains($file3, $file))
-								{
-									$filePath = $shortpath . $file2 . '/' . $file3;
-									if (!str_contains($filePath, $match))
-									{
-										$content = Filesystem::OpenFile($filePath);
-										if (!str_contains($this->PageTitle($content, true), $match)) {
-											continue;
-										}
-									}
-
-									return $filePath; # We don't add it to the case since it could be wrong
-								}
-							}
-						} else {
-							$filePath = $shortpath . $file2;
-							if (str_contains($file2, $file))
-							{
-								$filePath = $shortpath . $file2;
-								if (!str_contains($filePath, $match))
-								{
-									$content = Filesystem::OpenFile($filePath);
-									if (!str_contains($this->PageTitle($content, true), $match)) {
-										continue;
-									}
-								}
-
-								return $filePath; # We don't add it to the case since it could be wrong
-							}
-						}
-					}
-				}
-			}
-		}
-
-		function NukeCache() {
-
-		}
-
-		function SafeLink($url) {
-			$url = str_replace('*', '', $url); // Removes all *
-			$url = str_replace(' ', '_', $url); // Replace all spaces with _
-			# $url = strtolower($url);
-			$url = str_replace(['../', './'], '', $url);
-			$url = preg_replace('/[^a-zA-Z0-9_\-.:]/', '', $url);
-
-			if ($this->config['xampp'])
-			{
-				$url = str_replace(':', '/:', $url); // Apache hates it
-			}
-
-			return $url;
-		}
-
 		function PageTitle($text, $fullName = NULL)
 		{
 			$title = $this->config['name'];
 			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches)) {
+				$title = $matches[1];
+			}
+
+			if (preg_match('/<convar name="([^"]+)">([\s\S]*?)<\/convar>/', $text, $matches)) {
 				$title = $matches[1];
 			}
 
@@ -147,9 +67,17 @@
 			return $title;
 		}
 
-		function PageAddress($text)
+		function GetPageGroup(string $filePath)
 		{
-			return $this->SafeLink($this->PageTitle($text, true));
+			if (preg_match('/<group>(.*?)<\/group>/', FileSystem::OpenFile($filePath), $matches))
+				return trim($matches[1]);
+
+			return null;
+		}
+
+		function PageAddress(string $filePath)
+		{
+			return FileSystem::SafeLink(FileSystem::GetTitleFromEntry($filePath));
 		}
 
 		function GetSpecialTags($text)
@@ -352,7 +280,7 @@
 		{
 			$content = Filesystem::OpenFile($file);
 			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
-				return FileSystem::FindFile($matches[1]);
+				return FileSystem::FindFile(null, $matches[1]);
 			}
 
 			return null;
@@ -367,7 +295,7 @@
 				$argName = substr($argName, 0, $foundTab);
 			}
 
-			$argFile = FileSystem::FindFile($argName);
+			$argFile = FileSystem::FindFile(null, $argName);
 			$argName = $origArgName;
 			if ($isRecursed == false && $argFile != null)
 			{
@@ -384,7 +312,7 @@
 			$result = '';
 			if ($isArgList)
 			{
-				$result .= '<a class="link-page exists" href="/' . $this->SafeLink($origArgName) . '">' . $origArgName . '</a>(';
+				$result .= '<a class="link-page exists" href="/' . FileSystem::SafeLink($origArgName) . '">' . $origArgName . '</a>(';
 			}
 
 			$argParts = explode('|', $argName);
@@ -398,7 +326,7 @@
 					$linkArg = substr($argPart, 0, $foundTab);
 				}
 
-				$result .= '<a class="link-page ' . (FileSystem::FindFile($linkArg) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($linkArg) . '">' . htmlspecialchars($argPart, ENT_QUOTES, 'UTF-8') . '</a>';
+				$result .= '<a class="link-page ' . (FileSystem::FindFile($linkArg) != null ? 'exists' : 'missing') . '" href="/' . FileSystem::SafeLink($linkArg) . '">' . htmlspecialchars($argPart, ENT_QUOTES, 'UTF-8') . '</a>';
 				if($index !== $totalParts - 1)
 				{
 					$result .= ' or ';
@@ -532,6 +460,15 @@
 							$html .= ' Unsafe';
 						$html .= '</a>';
 					}
+
+					if (isset($func['replicated']))
+					{
+						$html .= '<a title="This ConVar is replicated to the Server" target="_blank">';
+							$html .= '<i class="mdi mdi-upload">';
+							$html .= '</i>';
+							$html .= ' Replicated';
+						$html .= '</a>';
+					}
 				$html .= '</div>';
 				
 				if (isset($func['desc']))
@@ -629,28 +566,34 @@
 					$html .= '<h1>Methods</h1>';
 					$html .= '<div class="section">';
 						$path = FileSystem::FindFile($type['name'], $type['name']);
-						if (isset($path) && $path != '') {
-							$fileName = substr($path, strripos($path, '/') + 1, strlen($path) - strripos($path, '/') - 4);
-							$mainDir = !strripos($path, $fileName . "/" . $fileName);
-							$path = substr($path, 0, strripos($path, '/'));
-							$files = array_diff(scandir($path), array('..', '.', strtolower($type['name']) . '.md'));
-							foreach($files as &$page2) {
-								$file = Filesystem::OpenFile($path . '/' . $page2 . ($mainDir ? ("/" . $page2) : ''));
-								if (!$file) {
+						if (!empty($path)) {
+							$directory = dirname($path);
+							$children = FileSystem::GetChildren($directory);
+							foreach ($children as $page2) {
+								if (strtolower($page2) == strtolower($type['name']) . '.md')
 									continue;
+
+								$filePath = $directory . '/' . $page2;
+								if (str_ends_with(strtolower($page2), '.md'))
+								{
+									$file = Filesystem::OpenFile($filePath);
+								} else {
+									$file = Filesystem::OpenFile($filePath . '/' . $page2 . '.md');
 								}
 
-								$pagetitle = $this->PageTitle($file); 
-
-								$page2 = substr($page2, 0, strripos($page2, '.'));
+								if (!$file)
+									continue;
 
 								$func = $this->FuncData($file);
+								if ($func === null)
+									continue;
+
 								$func['args'] = isset($func['args']) ? $func['args'] : array();
 								$func['rets'] = isset($func['rets']) ? $func['rets'] : array();
 
 								$html .= '<div class="member_line">';
 									$html .= '<div class="syntax' . $this->GetSpecialTags($file) . '">';
-										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($file) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
+										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($path) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
 
 										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 											$args = '';
@@ -709,7 +652,10 @@
 					foreach ($structure['fields'] as $field) {
 						$html .='<div class="parameter">';
 							$html .= $this->buildTypeList($field);
-							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . $this->SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
+							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . FileSystem::SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
+							if ($field['optional']) {
+								$html .= '<span class="default"> (Optional)</span>';
+							}
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
 								if(isset($field['default']) && $field['default'] != '') {
@@ -733,23 +679,26 @@
 				$html .= '<div class="function_description section">';
 					$html .= $this->text($enums['desc']);
 				$html .= '</div>';
-				$html .= '<h1>Parameters</h1>';
+				$html .= '<h1>Values</h1>';
 				$html .= '<div class="section">';
-					foreach ($enums['items'] as $field) {
-						$html .='<div class="parameter">';
-							$html .= '<a class="link-page ' . (FileSystem::FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
-							$html .= '<strong> ' . $field['name'] . '</strong>';
-							$html .= '<div class="description numbertagindent">';
-								$html .= $this->text($field['desc']);
-								if(isset($field['default']) && $field['default'] != '') {
-									$html .= '<p>';
-										$html .= '<strong>Default:</strong>';
-										$html .= '<code>' . $field['default'] . '</code>';
-									$html .= '</p>';
-								}
-							$html .= '</div>';
-						$html .= '</div>';
-					}
+					$html .= '<table>';
+						$html .= '<tbody>';
+							foreach ($enums['items'] as $field) {
+								$html .='<tr>';
+									$html .= '<td>';
+										$html .= '<a name="' . $field['key'] . '" class="anchor_offset"></a>';
+										$html .= '<a href="#' . $field['key'] . '">' . $field['key'] . '</a>';
+									$html .= '</td>';
+									$html .= '<td>';
+										$html .= $field['value'];
+									$html .= '</td>';
+									$html .= '<td>';
+										$html .= $this->text($field['desc']);
+									$html .= '</td>';
+								$html .= '</tr>';
+							}
+						$html .= '</tbody>';
+					$html .= '</table>';
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -831,7 +780,7 @@
 
 			$html = '<div class="deprecated">';
 				$html .= '<div class="inner">';
-					$html .= $htmlText;
+					$html .= $this->text($htmlText);
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -846,7 +795,7 @@
 
 			$html = '<div class="validate">';
 				$html .= '<div class="inner">';
-					$html .= $text;
+					$html .= $this->text($text);
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -857,7 +806,7 @@
 		{
 			$html = '<div class="internal">';
 				$html .= '<div class="inner">';
-					$html .= 'This is used internally - although you\'re able to use it you probably shouldn\'t.<br>' . $text;
+					$html .= 'This is used internally - although you\'re able to use it you probably shouldn\'t.<br>' . $this->text($text);
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -869,7 +818,7 @@
 			$html = '<div class="internal">';
 				$html .= '<div class="inner">';
 					$html .= 'This function is currently not used in the game mode, and it\'s unknown if it works or if it\'s broken.';
-					$html .= '<br>' . $text;
+					$html .= '<br>' . $this->text($text);
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -889,11 +838,11 @@
 
 		protected function buildPageURL($page, $name)
 		{
-			$file = FileSystem::FindFile($page);
+			$file = FileSystem::FindFile(null, $page);
 			$html = '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="';
-			$html .= "/" . $this->SafeLink($page);
+			$html .= "/" . FileSystem::SafeLink($page);
 			$html .= '">';
-				$html .= isset($name) && $name != '' ? $name : (isset($file) ? $this->PageTitle(Filesystem::OpenFile($file), true) : $this->SafeLink($page));
+				$html .= isset($name) && $name != '' ? $name : (isset($file) ? Filesystem::GetTitleFromEntry($file) : FileSystem::SafeLink($page));
 			$html .= '</a>';
 
 			return $html;
@@ -906,10 +855,9 @@
 			}
 
 			$file = FileSystem::FindFile($page);
-
 			$html = '<div class="ambig">';
 				$html .= '<div class="target">';
-					$html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="' . $page . '">' . (isset($file) ? $this->PageTitle(Filesystem::OpenFile($file), true) : $page) . '</a>';
+					$html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="' . $page . '">' . (isset($file) ? Filesystem::GetTitleFromEntry($file) : $page) . '</a>';
 				$html .= '</div>';
 				$html .= '<div class="desc">';
 					$html .= $text;
@@ -984,7 +932,7 @@
 						if (!isset($functionFile))
 						{
 							# Try to guess the function.
-							$functionFile = $this->FindFileMatch(substr($name, $pos + 1), substr($name, 0, $pos));
+							$functionFile = FileSystem::FindFuzzyFile(substr($name, $pos + 1), substr($name, 0, $pos));
 						}
 
 						$parentFile = FileSystem::FindFile(substr($name, 0, $pos));
@@ -1000,14 +948,14 @@
 							if ($parentFile)
 							{
 								$output = '<span class="className">';
-									$output .= '<a href="/' . $this->PageAddress(Filesystem::OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
+									$output .= '<a href="/' . $this->PageAddress($parentFile) . '">' . substr($name, 0, $pos) . '</a>';
 								$output .= '</span>';
 							} else {
 								$output = substr($name, 0, $pos);
 							}
 							$output .= substr($name, $pos, 1);
 							$output .= '<span class="method">';
-								$output .= '<a href="/' . $this->PageAddress(Filesystem::OpenFile($functionFile)) . '">' . substr($name, $pos + 1) . '</a>';
+								$output .= '<a ' . ($parentFile !== null ? ('href="/' . $this->PageAddress($parentFile)) : 'target="_blank"') . '">' . substr($name, $pos + 1) . '</a>';
 							$output .= '</span>';
 
 							return $output;
@@ -1077,7 +1025,7 @@
 					$idx = $idx + 1;
 					$html .= '<div>';
 						$html .= '<span class="numbertag">' . $idx . '</span>';
-						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . FileSystem::SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
 						$html .= '<strong> ' . $arg['name'] . '</strong>';
 						$html .= ' - ' . $this->text($arg['desc']);
 					$html .= '</div>';
@@ -1093,7 +1041,7 @@
 					$idx = $idx + 1;
 					$html .= '<div>';
 						$html .= '<span class="numbertag">' . $idx . '</span>';
-						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . FileSystem::SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
 						$html .= '<strong> ' . $arg['name'] . '</strong>';
 						$html .= ' - ' . $this->text($arg['desc']);
 					$html .= '</div>';
@@ -1195,7 +1143,7 @@
 					$totalParts = count($argParts);
 					foreach ($argParts as $index => $argPart)
 					{
-						$html .= '<a class="link-page ' . (FileSystem::FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . FileSystem::SafeLink($argPart) . '">' . $argPart . '</a>';
 						if($index !== $totalParts - 1)
 						{
 							$html .= ' or ';
@@ -1242,35 +1190,62 @@
 			// Solves a bug, as callback also uses <arg> & in a function list it would falsely add these args
 			$text = preg_replace('/<callback>[\s\S]+?<\/callback>/', '', $text);
 
-			preg_match_all('/<' . $prefix . ' name="([^"]*)" type="([^"]+)"(?: default="([^"]*)")?(?: realm="([^"]*)")?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
+			if ($name === 'items') {
+				preg_match_all('/<' . $prefix . ' key="([^"]*)" value="([^"]+)"(?: type="([^"]*)")?(?: realm="([^"]*)")?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
 
-			foreach ($matches as $match) {
-				$name = $match[1];
-				$type = $match[2];
-				$default = isset($match[3]) ? $match[3] : null;
-				$realm = isset($match[4]) ? $match[4] : null;
-				$desc = trim($match[5]);
+				foreach ($matches as $match) {
+					$key = $match[1];
+					$value = $match[2];
+					$type = isset($match[3]) ? $match[3] : 'number';
+					$realm = isset($match[4]) ? $match[4] : null;
+					$desc = trim($match[5]);
 
-				if (isset($default) && $default == ' ')
-				{
-					$default = '""';
+					$retArray = array(
+						'key' => $key,
+						'value' => $value,
+						'desc' => $desc,
+						'type' => $type,
+					);
+
+					if ($realm !== null) {
+						$retArray['realm'] = $realm;
+					}
+
+					$ret[] = $retArray;
 				}
+			} else {
+				preg_match_all('/<' . $prefix . ' name="([^"]*)" type="([^"]+)"(?: default="([^"]*)")?(?: realm="([^"]*)")?(?: (optional))?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
 
-				$retArray = array(
-					'name' => $name,
-					'type' => $type,
-					'desc' => $desc,
-				);
+				foreach ($matches as $match) {
+					$name = $match[1];
+					$type = $match[2];
+					$default = isset($match[3]) ? $match[3] : null;
+					$realm = isset($match[4]) ? $match[4] : null;
+					$optional = isset($match[5]) ? $match[5] === 'optional' : false;
+					$desc = trim($match[6]);
 
-				if ($default !== null) {
-					$retArray['default'] = $default;
+					if (isset($default) && $default == ' ')
+					{
+						$default = '""';
+					}
+
+					$retArray = array(
+						'name' => $name,
+						'type' => $type,
+						'desc' => $desc,
+						'optional' => $optional,
+					);
+
+					if ($default !== null) {
+						$retArray['default'] = $default;
+					}
+
+					if ($realm !== null) {
+						$retArray['realm'] = $realm;
+					}
+
+					$ret[] = $retArray;
 				}
-
-				if ($realm !== null) {
-					$retArray['realm'] = $realm;
-				}
-
-				$ret[] = $retArray;
 			}
 
 			return $ret;
@@ -1529,6 +1504,48 @@
 			);
 
 			$replaceCall(
+				'/<convar name="([^"]+)">([\s\S]*?)<\/convar>/s',
+				function ($matches) use ($sourceText) {
+					// A ConVar? Its a Function :troll:
+					// I am lazy and this is easy, I like how Functions are shown :3
+					$function = array();
+					$function['name'] = $matches[1];
+					$function['parent'] = '';
+					$function['type'] = 'libraryfield'; // Looks nice
+					$function['sourceText'] = $sourceText;
+
+					$textContent = $matches[2];
+
+					if (preg_match('/<\/replicated>/s', $textContent, $matches)) {
+						$function['replicated'] = true;
+					}
+
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches)) {
+						$function['desc'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches)) {
+						$function['source'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) { # Used by enums
+						$function['value'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<realm>(.*?)<\/realm>/s', $textContent, $matches)) {
+						$data = $this->getRealm($matches[1]);
+						$function['realm'] = $data['realm'];
+						$function['realmdesc'] = $data['realmdesc'];
+					} else {
+						$function['realm'] = '';
+						$function['realmdesc'] = "No";
+					}
+
+					return $this->buildFunction($function);
+				}
+			);
+
+			$replaceCall(
 				'/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s',
 				function ($matches){
 					$type = array();
@@ -1602,7 +1619,7 @@
 					}
 
 					if (preg_match('/<items>(.*?)<\/items>/s', $content, $matches)) {
-						$enums['items'] = $this->getStuff($matches[1], 'items', 'item');
+						$enums['items'] = $this->getStuff(trim($matches[1]), 'items', 'item');
 					}
 
 					return $this->buildEnums($enums);

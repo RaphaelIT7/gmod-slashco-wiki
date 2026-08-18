@@ -961,6 +961,10 @@ hr {
 .markdown .struct .member .struct_anchor_link, .markdown .struct .parameter .struct_anchor_link, .markdown .shader .member .struct_anchor_link, .markdown .shader .parameter .struct_anchor_link {
   color: #888;
 }
+.markdown .struct .section .parameter .default {
+  color: rgba(200, 200, 200, 0.4);
+  padding: 2px;
+}
 .markdown .numbertag {
   background-color: #7d7d7d;
   padding: 2px 8px;
@@ -979,10 +983,11 @@ hr {
   border-spacing: 0;
   border-collapse: collapse;
   display: block;
+  color: #d6d9e0;
 }
 .markdown table td {
   padding: 6px 13px;
-  border: 1px solid #90beef;
+  border: 1px solid #343944;
   font-size: 12px;
 }
 .markdown table td:last-of-type {
@@ -995,19 +1000,22 @@ hr {
 }
 .markdown table th {
   padding: 3px 8px;
-  background-color: #90beef;
-  border: 1px solid #63a4e9;
+  background-color: #252a34;
+  border: 1px solid #3b4250;
   font-size: 11px;
-  color: white;
+  color: #f1f3f7;
 }
 .markdown table tbody tr {
-  background-color: #f6f8fb;
+  background-color: #181a20;
 }
 .markdown table tbody tr:nth-child(2n) {
-  background-color: #ebf3fb;
+  background-color: #1e2128;
+}
+.markdown table tbody tr:hover {
+  background-color: #252a33;
 }
 .markdown table tbody tr:has(:target) {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(100, 140, 190, 0.18);
 }
 .markdown img.image {
   margin: 16px auto;
@@ -1095,6 +1103,18 @@ hr {
   padding-top: 2px;
 }
 
+#sidebar a.chang:after {
+    content: "changing";
+    background-color: #fffd5b;
+    color: #000000;
+    font-size: 7px;
+    text-transform: uppercase;
+    padding: 2px;
+    margin-left: 5px;
+    display: inline-block;
+    position: relative;
+    top: -4px;
+}
 #sidebar a.intrn:after {
   content: "internal";
   background-color: #c7c7c7;
