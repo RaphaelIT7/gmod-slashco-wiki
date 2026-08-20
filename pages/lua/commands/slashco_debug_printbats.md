@@ -5,4 +5,5 @@
 		Prints all battery spawn points on the map and their associated generators.
 	</summary>
 	<realm>Server</realm>
+	<group>Debug</group>
 </type>

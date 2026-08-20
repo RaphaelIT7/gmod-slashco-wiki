@@ -5,4 +5,5 @@
 		<internal></internal>
 	</summary>
 	<realm>Server</realm>
+	<group>Debug</group>
 </type>

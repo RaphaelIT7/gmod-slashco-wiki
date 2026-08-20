@@ -4,4 +4,5 @@
 		Opens the Survivor item picker.
 	</summary>
 	<realm>Server</realm>
+	<group>Debug</group>
 </type>

@@ -5,4 +5,5 @@
 		When using the default "sc_" prefix, also prints generator, gas can, battery, and total counts.
 	</summary>
 	<realm>Server</realm>
+	<group>Debug</group>
 </type>

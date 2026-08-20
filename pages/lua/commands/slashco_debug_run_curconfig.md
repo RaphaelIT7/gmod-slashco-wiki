@@ -8,4 +8,5 @@
 		</deprecated>
 	</summary>
 	<realm>Server</realm>
+	<group>Debug</group>
 </type>
