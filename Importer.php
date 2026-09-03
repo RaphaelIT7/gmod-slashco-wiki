@@ -5,18 +5,17 @@
 
 		function getTextBeforeLastSlash($input) {
 			$lastSlashPosition = strrpos($input, '/');
-			if ($lastSlashPosition !== false) {
+
+			if ($lastSlashPosition !== false)
 				return substr($input, 0, $lastSlashPosition);
-			}
 
 			return $input;
 		}
 
 		// Returns true if it ran a full update
 		public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0, $addressOverride = NULL) {
-			if (!Filesystem::FileExists($page)) {
+			if (!Filesystem::FileExists($page))
 				return false;
-			}
 
 			// Enfoce lowercase as out stuff expects it
 			if (strtolower($page) != $page)
@@ -90,8 +89,7 @@
 		{
 			$name = str_replace(".php", "", strtolower($file));
 			$fileChanged = FileSystem::GetModifiedTime($file);
-			if ($fileChanged != $this->MySQL->GetCacheTime($name))
-			{
+			if ($fileChanged != $this->MySQL->GetCacheTime($name)) {
 				$this->MySQL->SetCachePage($name, '', $fileChanged);
 				return true;
 			}
@@ -110,9 +108,8 @@
 
 			if (!$fullUpdate) {
 				foreach($this->phpPages as &$phpPage) {
-					if ($this->CheckPHP($phpPage)) {
+					if ($this->CheckPHP($phpPage))
 						$fullUpdate = true;
-					}
 				}
 			}
 
@@ -122,21 +119,18 @@
 					$files = Filesystem::GetChildren($path);
 					foreach ($files as &$page) {
 						if (Filesystem::FolderExists($path . $page)) {
-							if ($this->ImportPage($path . $page . '/' . $page . '.md', $page, $fullUpdate) && !$fullUpdate) {
+							if ($this->ImportPage($path . $page . '/' . $page . '.md', $page, $fullUpdate) && !$fullUpdate)
 								break;
-							}
 
 							$fullpath = $path . $page;
 							$subFiles = Filesystem::GetChildren($fullpath);
 							foreach($subFiles as &$subPage) {
-								if ($this->ImportPage($fullpath . '/' . $subPage, $page, $fullUpdate) && !$fullUpdate) {
+								if ($this->ImportPage($fullpath . '/' . $subPage, $page, $fullUpdate) && !$fullUpdate)
 									break;
-								}
 							}
 						} else {
-							if ($this->ImportPage($path . $page, $chapter['path'], $fullUpdate) && !$fullUpdate) {
+							if ($this->ImportPage($path . $page, $chapter['path'], $fullUpdate) && !$fullUpdate)
 								break;
-							}
 						}
 					}
 				}
@@ -148,6 +142,8 @@
 			}
 
 			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, ''); # We override the address to be ''
+
+			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['missing_page'], '/missing', $fullUpdate, NULL, NULL);
 
 			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['cache_page'], '/cache', $fullUpdate, NULL, NULL);
 
@@ -162,9 +158,7 @@
 			$address = $sqlPage['address'];
 
 			if ($this->Parser->config['xampp'])
-			{
 				$address = str_replace('/:', ':', $address); // Apache hates it
-			}
 
 			return $address;
 		}
@@ -248,11 +242,10 @@
 										foreach ($groupPages as &$groupPage) {
 											$sqlPage = $this->MySQL->GetPageForSidebarByFile($groupPage['path']);
 											$html .= '<li>';
-											if (isset($sqlPage)) {
+											if (isset($sqlPage))
 												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage) . '">' . $sqlPage['title'] . '</a>';
-											} else {
+											else
 												$html .= '<p>' . $groupPage['path'] . '</p>';
-											}
 
 											$html .= '</li>';
 										}
@@ -321,9 +314,9 @@
 										$sqlPage = $this->MySQL->GetPageForSidebarByFile($fullpath . '/' . $page . '.md');
 										if (isset($sqlPage)) {
 											$title = $sqlPage['title'];
-											if ($group !== '') {
+
+											if ($group !== '')
 												$title .= ' (' . $group . ')';
-											}
 
 											$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $title . '</a>';
 										} else {
@@ -336,11 +329,10 @@
 										$sqlPage = $this->MySQL->GetPageForSidebarByFile($groupPage['path']);
 
 										$html .= '<li>';
-											if (isset($sqlPage)) {
+											if (isset($sqlPage))
 												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage) . '">' . $sqlPage['title'] . '</a>';
-											} else {
+											else
 												$html .= '<p>' . $groupPage['path'] . '</p>';
-											}
 										$html .= '</li>';
 									}
 

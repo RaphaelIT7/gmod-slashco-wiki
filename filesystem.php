@@ -25,6 +25,16 @@ class Filesystem
 
 	private static function BuildIndex()
 	{
+		$rootPath = self::NormalizePhysicalPath(self::$config['pages_path']);
+		if (self::$config['front_page'] !== null)
+			self::IndexFile(self::NormalizePhysicalPath($rootPath . self::$config['front_page']), $rootPath);
+
+		if (self::$config['missing_page'] !== null)
+			self::IndexFile(self::NormalizePhysicalPath($rootPath . self::$config['missing_page']), $rootPath);
+
+		if (self::$config['cache_page'] !== null)
+			self::IndexFile(self::NormalizePhysicalPath($rootPath . self::$config['cache_page']), $rootPath);
+
 		if (!isset(self::$config['categories']) || !is_array(self::$config['categories']))
 			return;
 
@@ -93,9 +103,7 @@ class Filesystem
 			$relative = preg_replace('/\.md$/i', '', $relative);
 			$relativeKey = self::NormalizeLookupKey($relative);
 			if ($relativeKey !== '' && !isset(self::$fileIndex[$relativeKey]))
-			{
 				self::$fileIndex[$relativeKey] = $physicalPath;
-			}
 		}
 
 		$content = self::OpenFile($physicalPath);
