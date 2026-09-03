@@ -222,7 +222,7 @@ class Filesystem
 		$title = trim((string)$title);
 		$title = preg_replace('/\s+/', ' ', $title);
 
-		return strtolower($title);
+		return $title;
 	}
 
 	public static function NormalizePhysicalPath(string $path)
