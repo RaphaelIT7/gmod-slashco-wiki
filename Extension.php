@@ -2,6 +2,7 @@
 	include('Parsedown.php');
 	include('utils.php');
 	include('filesystem.php');
+	include('LuaParser.php');
 
 	$function = array();
 
@@ -11,8 +12,6 @@
 		public $config;
 		public $sql;
 		public $categories;
-		protected $lua_keywords = array('and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while', 'continue');
-		protected $lua_operators = array('&&', '!=', '==', '>=', '<=', '||', '#', '+', '-', '*', '/', '%', '^', '~=', '<', '>', '..');
 		protected $cpp_keywords = array(
 			'alignas', 'alignof', 'and', 'and_eq', 'asm', 'auto',
 			'bitand', 'bitor', 'bool', 'break', 'case', 'catch', 'char', 'char16_t', 'char32_t', 'class', 'compl', 'const', 'constexpr', 'const_cast', 'continue',
@@ -37,32 +36,27 @@
 		function PageTitle($text, $fullName = NULL)
 		{
 			$title = $this->config['name'];
-			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches)) {
+			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches))
 				$title = $matches[1];
-			}
 
-			if (preg_match('/<convar name="([^"]+)">([\s\S]*?)<\/convar>/', $text, $matches)) {
+			if (preg_match('/<convar name="([^"]+)">([\s\S]*?)<\/convar>/', $text, $matches))
 				$title = $matches[1];
-			}
 
 			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				if (isset($fullName))
 				{
-					if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua') {
+					if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua')
 						$title = (strlen($matches[2]) > 0 ? ($matches[2] . ':') : '') . $matches[1];
-					} else if(($matches[3] == 'libraryfunc' || $matches[3] == 'libraryfield') && $this->config['code_language'] == 'lua') {
+					else if(($matches[3] == 'libraryfunc' || $matches[3] == 'libraryfield') && $this->config['code_language'] == 'lua')
 						$title = (strlen($matches[2]) > 0 ? ($matches[2] . '.') : '') . $matches[1];
-					} else {
+					else
 						$title = (strlen($matches[2]) > 0 ? ($matches[2] . $this->config['code_funcseparator']) : '') . $matches[1];
-					}
-				} else {
-					   $title = $matches[1];
-				}
+				} else
+					$title = $matches[1];
 			}
 
-			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s', $text, $matches)) {
+			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s', $text, $matches))
 				$title = $matches[1];
-			}
 
 			return $title;
 		}
@@ -82,17 +76,14 @@
 
 		function GetSpecialTags($text)
 		{
-			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches)) {
+			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches))
 				return ' depr';
-			}
 
-			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches)) {
+			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches))
 				return ' depr';
-			}
 
-			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches)) {
+			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches))
 				return ' intrn';
-			}
 
 			return '';
 		}
@@ -107,19 +98,18 @@
 				$realm = $fallbackRealm;
 			}
 
-			if ($realm === 'Client and Menu') {
+			if ($realm === 'Client and Menu')
 				return 'rc rm';
-			} elseif ($realm === 'Menu') {
+			elseif ($realm === 'Menu')
 				return 'rm';
-			} elseif ($realm === 'Client') {
+			elseif ($realm === 'Client')
 				return 'rc';
-			} elseif ($realm === 'Server') {
+		 	elseif ($realm === 'Server')
 				return 'rs';
-			} elseif ($realm === 'Shared') {
+			elseif ($realm === 'Shared')
 				return 'rs rc';
-			} elseif ($realm === 'Shared and Menu') {
+			elseif ($realm === 'Shared and Menu')
 				return 'rs rc rm';
-			}
 
 			return '';
 		}
@@ -129,33 +119,25 @@
 			$tags = '';
 			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				if (isset($matches[3]) && $matches[3] != '') {
-					if ($matches[3] == 'classfunc' || $matches[3] == 'libraryfunc') {
+					if ($matches[3] == 'classfunc' || $matches[3] == 'libraryfunc')
 						$tags .= 'cm f meth memb';
-					}
 
-					if ($matches[3] == 'libraryfield') {
+					if ($matches[3] == 'libraryfield')
 						$tags .= 'cm meth memb';
-					}
 
-					if ($matches[3] == 'hook') {
+					if ($matches[3] == 'hook')
 						$tags .= 'cm event f meth memb';
-					}
 				}
-			} else {
+			} else
 				$tags .= 'cm';
-			}
 
-			if (strlen($tags) != 0) {
+			if (strlen($tags) != 0)
 				$tags .= ' ';
-			}
 
-			if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
-				$realm = $matches[1];
-
-				$tags .= $this->getRealmTagsByName($realm);
-			} else {
+			if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches))
+				$tags .= $this->getRealmTagsByName($matches[1]);
+			else
 				$tags .= 'e';
-			}
 
 			$tags .= $this->GetSpecialTags($text);
 
@@ -168,22 +150,20 @@
 				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches2)) {
 					$realm = $matches2[1];
 
-					if ($realm === 'Client and Menu') {
+					if ($realm === 'Client and Menu')
 						return 'rc rm';
-					} elseif ($realm === 'Menu') {
+					elseif ($realm === 'Menu')
 						return 'rm';
-					} elseif ($realm === 'Client') {
+					elseif ($realm === 'Client')
 						return 'rc';
-					} elseif ($realm === 'Server') {
+					elseif ($realm === 'Server')
 						return 'rs';
-					} elseif ($realm === 'Shared') {
+					elseif ($realm === 'Shared')
 						return 'rs rc';
-					} elseif ($realm === 'Shared and Menu') {
+					elseif ($realm === 'Shared and Menu')
 						return 'rs rc rm';
-					}
-				} else {
+				} else
 					return '';
-				}
 			}
 
 			return '';
@@ -199,13 +179,11 @@
 
 				$textContent = $matches[4];
 
-				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
+				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches))
 					$function['desc'] = $matches[1];
-				}
 
-				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
+				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches))
 					$function['source'] = $matches[1];
-				}
 
 				#if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
 				#	$this->getrealm($matches[1]);
@@ -214,13 +192,11 @@
 				#	$function['realmdesc'] = "No";
 				#}
 
-				if (preg_match('/<args>(.*?)<\/args>/s', $text, $matches)) {
+				if (preg_match('/<args>(.*?)<\/args>/s', $text, $matches))
 					$function['args'] = $this->getStuff($matches[1], 'args', 'arg');
-				}
 
-				if (preg_match('/<rets>(.*?)<\/rets>/s', $text, $matches)) {
+				if (preg_match('/<rets>(.*?)<\/rets>/s', $text, $matches))
 					$function['rets'] = $this->getStuff($matches[1], 'rets', 'ret');
-				}
 
 				return $function;
 			}
@@ -236,9 +212,7 @@
 			$image = parent::inlineImage($excerpt);
 
 			if (!isset($image))
-			{
 				return null;
-			}
 
 			$image['element']['attributes']['src'] = $this->baseImagePath . $image['element']['attributes']['src'];
 
@@ -257,31 +231,28 @@
 
 		protected function getFunctionName($func)
 		{
-			if (!isset($func['parent']) || strlen($func['parent']) == 0) {
+			if (!isset($func['parent']) || strlen($func['parent']) == 0)
 				return $func['name'];
-			}
 
 			$outPut = $func['parent'];
 
-			if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield')) {
+			if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield'))
 				$outPut .= '.';
-			} else if (isset($func['type']) && $func['type'] == 'hook') {
+			else if (isset($func['type']) && $func['type'] == 'hook')
 				$outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
-			} else {
+			else
 				$outPut .= $this->config['code_funcseparator'];
-			}
 
 			$outPut .= $func['name'];
 
 			return $outPut;
 		}
 
-		protected function findParent($file)
+		public function findParent($file)
 		{
 			$content = Filesystem::OpenFile($file);
-			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
+			if (preg_match('/parent="([^"]*)"/s', $content, $matches))
 				return FileSystem::FindFile(null, $matches[1]);
-			}
 
 			return null;
 		}
@@ -291,9 +262,8 @@
 			$isArgList = false;
 			$origArgName = $argName;
 			$foundTab = strrpos($argName, '<');
-			if ($foundTab !== false) {
+			if ($foundTab !== false)
 				$argName = substr($argName, 0, $foundTab);
-			}
 
 			$argFile = FileSystem::FindFile(null, $argName);
 			$argName = $origArgName;
@@ -311,9 +281,7 @@
 
 			$result = '';
 			if ($isArgList)
-			{
 				$result .= '<a class="link-page exists" href="/' . FileSystem::SafeLink($origArgName) . '">' . $origArgName . '</a>(';
-			}
 
 			$argParts = explode('|', $argName);
 			$totalParts = count($argParts);
@@ -322,21 +290,16 @@
 				// If the argument is something like table<IGModAudioChannel> then we must ignore the < > when looking up the file
 				$foundTab = strrpos($argPart, '<');
 				$linkArg = $argPart;
-				if ($foundTab !== false) {
+				if ($foundTab !== false)
 					$linkArg = substr($argPart, 0, $foundTab);
-				}
 
 				$result .= '<a class="link-page ' . (FileSystem::FindFile($linkArg) != null ? 'exists' : 'missing') . '" href="/' . FileSystem::SafeLink($linkArg) . '">' . htmlspecialchars($argPart, ENT_QUOTES, 'UTF-8') . '</a>';
 				if($index !== $totalParts - 1)
-				{
 					$result .= ' or ';
-				}
 			}
 
 			if ($isArgList)
-			{
 				$result .= ')';
-			}
 
 			return $result;
 		}
@@ -344,15 +307,12 @@
 		protected function buildTypeList($types)
 		{
 			$typeList = '';
-			if (!empty($types['type'])) {
+			if (!empty($types['type']))
 				$types = array($types);
-			}
 
 			foreach ($types as $type) {
 				if (!str_ends_with($typeList, ',') && $typeList !== '')
-				{
 					$typeList .= ', ';
-				}
 
 				$typePart = explode('|', $type['type']);
 				$totalParts = count($typePart);
@@ -360,9 +320,7 @@
 				{
 					$typeList .= $this->getArgLink($typePart);
 					if($index !== $totalParts - 1)
-					{
 						$typeList .= ' or ';
-					}
 				}
 
 				#if (isset($ret['default']) && $ret['default'] !== '')
@@ -382,9 +340,11 @@
 					#$html .= '<a class="link-page exists" href="/gmod/number">number</a>';
 
 					if(isset($func['parent']) && strlen($func['parent']) > 0)
-					{
-						$func['parent'] = '<a class="link-page ' . (FileSystem::FindFile($func['parent']) != null ? 'exists' : 'missing') . '" href="/' . $func['parent'] . '">' . $func['parent'] . '</a>';
-					}
+						$func['parent'] = '<a class="link-page ' .
+								(FileSystem::FindFile($func['parent']) != null ? 'exists' : 'missing') .
+								'" href="/' . $func['parent'] . '">' .
+									$func['parent'] .
+							'</a>';
 
 					$func['args'] = isset($func['args']) ? $func['args'] : array();
 					$func['rets'] = isset($func['rets']) ? $func['rets'] : array();
@@ -392,9 +352,7 @@
 						$args = '';
 						foreach ($func['args'] as $arg) {
 							if (!str_ends_with($args, ', ') && $args !== '')
-							{
 								$args .= ', ';
-							}
 
 							$argParts = explode('|', $arg['type']);
 							$totalParts = count($argParts);
@@ -402,17 +360,13 @@
 							{
 								$args .= $this->getArgLink($argPart);
 								if($index !== $totalParts - 1)
-								{
 									$args .= ' or ';
-								}
 							}
 
 							$args .= ' ' . $arg['name'];
 
 							if (isset($arg['default']) && $arg['default'] !== '')
-							{
 								$args .= ' = ' . $arg['default'];
-							}
 						}
 
 						$rets = $this->buildTypeList($func['rets']);
@@ -495,15 +449,14 @@
 							{
 								$html .= $this->getArgLink($argPart);
 								if($index === $totalParts - 1)
-								{
 									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
-								} else {
+								else
 									$html .= ' or ';
-								}
 							}
-							if(isset($arg['default']) && $arg['default'] != '') {
+
+							if(isset($arg['default']) && $arg['default'] != '')
 								$html .= '<span class="default"> = ' . $arg['default'] . '</span>';
-							}
+
 							$html .= '<div class="numbertagindent">';
 								$html .= $this->text($arg['desc']);
 							$html .= '</div>';
@@ -528,15 +481,14 @@
 							{
 								$html .= $this->getArgLink($argPart);
 								if($index === $totalParts - 1)
-								{
 									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
-								} else {
+								else
 									$html .= ' or ';
-								}
 							}
-							if(isset($arg['default']) && $arg['default'] != '') {
+
+							if(isset($arg['default']) && $arg['default'] != '')
 								$html .= '<span class="default"> = ' . $arg['default'] . '</span>';
-							}
+							
 							$html .= '<div class="numbertagindent">';
 								$html .= $this->text($arg['desc']);
 							$html .= '</div>';
@@ -575,11 +527,9 @@
 
 								$filePath = $directory . '/' . $page2;
 								if (str_ends_with(strtolower($page2), '.md'))
-								{
 									$file = Filesystem::OpenFile($filePath);
-								} else {
+								else
 									$file = Filesystem::OpenFile($filePath . '/' . $page2 . '.md');
-								}
 
 								if (!$file)
 									continue;
@@ -593,15 +543,13 @@
 
 								$html .= '<div class="member_line">';
 									$html .= '<div class="syntax' . $this->GetSpecialTags($file) . '">';
-										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($path) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
+										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($path) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_') . '</a>';
 
 										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 											$args = '';
 											foreach ($func['args'] as $arg) {
 												if (!str_ends_with($args, ', ') && $args !== '')
-												{
 													$args .= ', ';
-												}
 
 												$argParts = explode('|', $arg['type']);
 												$totalParts = count($argParts);
@@ -609,17 +557,13 @@
 												{
 													$args .= $this->getArgLink($argPart);
 													if($index !== $totalParts - 1)
-													{
 														$args .= ' or ';
-													}
 												}
 
 												$args .= ' ' . $arg['name'];
 
 												if (isset($arg['default']) && $arg['default'] !== '')
-												{
 													$args .= ' = ' . $arg['default'];
-												}
 											}
 
 											$rets = $this->buildTypeList($func['rets']);
@@ -653,11 +597,13 @@
 						$html .='<div class="parameter">';
 							$html .= $this->buildTypeList($field);
 							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . FileSystem::SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
-							if ($field['optional']) {
+							
+							if ($field['optional'])
 								$html .= '<span class="default"> (Optional)</span>';
-							}
+
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
+								
 								if(isset($field['default']) && $field['default'] != '') {
 									$html .= '<p>';
 										$html .= '<strong>Default: </strong>';
@@ -707,9 +653,8 @@
 
 		protected function buildNote($text, $preView)
 		{
-			if ($preView) {
+			if ($preView)
 				return $this->GetPreviewText($text);
-			}
 
 			$html = '<div class="note">';
 				$html .= '<div class="inner">';
@@ -722,9 +667,8 @@
 
 		protected function buildWarning($text, $preView)
 		{
-			if ($preView) {
+			if ($preView)
 				return $this->GetPreviewText($text);
-			}
 
 			$html = '<div class="warning">';
 				$html .= '<div class="inner">';
@@ -750,16 +694,13 @@
 			if ($version)
 			{
 				$version = (double)$version;
-				if ($version == 0 || $version > $this->config['version'])  { // If 0 then it failed to cast.
+				if ($version == 0 || $version > $this->config['version']) // If 0 then it failed to cast.
 					$htmlText .= '<p>This will be removed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).</p>';
-				}
 			}
 
 			$htmlText .= $text;
-
-			if ($preView) {
+			if ($preView)
 				return $htmlText;
-			}
 
 			$html = '<div class="removed">';
 				$html .= '<div class="inner">';
@@ -773,11 +714,9 @@
 		protected function buildDeprecated($text, $preView)
 		{
 			$htmlText = 'We advise against using this. It may be changed or removed in a future update. ' . $text;
-
-			if ($preView) {
+			if ($preView)
 				return $htmlText;
-			}
-
+			
 			$html = '<div class="deprecated">';
 				$html .= '<div class="inner">';
 					$html .= $this->text($htmlText);
@@ -789,9 +728,8 @@
 
 		protected function buildValidate($text, $preView)
 		{
-			if ($preView) {
+			if ($preView)
 				return $text;
-			}
 
 			$html = '<div class="validate">';
 				$html .= '<div class="inner">';
@@ -850,9 +788,8 @@
 
 		protected function buildAmbig($text, $page, $preView)
 		{
-			if ($preView) {
+			if ($preView)
 				return '';
-			}
 
 			$file = FileSystem::FindFile($page);
 			$html = '<div class="ambig">';
@@ -869,9 +806,8 @@
 
 		protected function buildBug($text, $issue, $preView)
 		{
-			if ($preView) {
+			if ($preView)
 				return $text;
-			}
 
 			$html = '<div class="bug">';
 				$html .= '<div class="inner">';
@@ -897,83 +833,110 @@
 
 		protected function processCode($code)
 		{
-			if ($this->config['code_language'] == 'lua') {
-				/*foreach($this->lua_operators as $operator)
-				{
-					$code = preg_replace('/(?<![<\w])' . preg_quote($operator, '/') . '(?![>\w])/', '<span class="operator">' . $operator . '</span>', $code);
-				}*/
+			if ($this->config['code_language'] == 'lua')
+			{
+				$tokens = ParseLua($code);
+				$output = '';
+				$count = count($tokens);
 
-				$code = preg_replace('/"(.*?)"/', '<span class="string">"$1"</span>', $code);
-
-				foreach($this->lua_keywords as $keyword)
+				for ($i = 0; $i < $count; $i++)
 				{
-					$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
+					$token = $tokens[$i];
+					$type = $token['type'];
+					$content = $token['content'];
+
+					if ($type === 'TK_EOF')
+						break;
+
+					if ($type === 'TK_NAME' && $i + 2 < $count)
+					{
+						$separator = $tokens[$i + 1];
+						$method = $tokens[$i + 2];
+
+						if (($separator['type'] === 'TK_COLON' || $separator['type'] === 'TK_DOT') && $method['type'] === 'TK_NAME')
+						{
+							$rendered = RenderLuaMethod(
+								$content,
+								$separator['content'],
+								$method['content'],
+								$this
+							);
+
+							if ($rendered !== null)
+							{
+								$output .= $rendered;
+								$i += 2;
+								continue;
+							}
+						}
+					}
+
+					$escaped = htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+					if ($token['isSpace'])
+					{
+						$output .= $escaped;
+						continue;
+					}
+
+					if ($type === 'TK_COMMENT')
+					{
+						$output .= '<span class="comment">' . $escaped . '</span>';
+						continue;
+					}
+
+					if ($type === 'TK_STRING')
+					{
+						$output .= '<span class="string">' . $escaped . '</span>';
+						continue;
+					}
+
+					if ($type === 'TK_NUMBER')
+					{
+						$output .= '<span class="number">' . $escaped . '</span>';
+						continue;
+					}
+
+					if (IsLuaKeyword($type))
+					{
+						$output .= '<span class="keyword">' . $escaped . '</span>';
+						continue;
+					}
+
+					if (IsLuaOperator($type))
+					{
+						$output .= '<span class="operator">' . $escaped . '</span>';
+						continue;
+					}
+
+					$output .= $escaped;
 				}
 
-				$code = preg_replace('/--(.*?)\n/', '<span class="comment">--$1</span>', $code);
-				$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
-				$code = preg_replace('/--\[\[(.*?)\]\]/s', '<span class="multiline-comment">--[[$1]]</span>', $code);
+				return $output;
+			}
 
-				$code = preg_replace('/local function (\w+)\(/', 'local function <span class="methoddef">$1</span>(', $code);
-			
-				$code = preg_replace_callback(
-					'/(?<=\s)([a-zA-Z0-9_]+(?:[.:][a-zA-Z0-9_]+)+)/', // Matches any "classname.function(" or "classname:function("
-					function($match) {
-						$name = $match[1];
-						$functionFile = FileSystem::FindFile($name);
-						$parentFile = null; // the class/library file
+			if ($this->config['code_language'] == 'c++')
+			{
+				foreach ($this->cpp_keywords as $keyword)
+				{
+					$code = preg_replace(
+						'/\b' . preg_quote($keyword, '/') . '\b/',
+						'<span class="keyword">' . $keyword . '</span>',
+						$code
+					);
+				}
 
-						$pos = stripos($name, ":");
-						if (!$pos)
-						{
-							$pos = stripos($name, ".");
-						}
-
-						if (!isset($functionFile))
-						{
-							# Try to guess the function.
-							$functionFile = FileSystem::FindFuzzyFile(substr($name, $pos + 1), substr($name, 0, $pos));
-						}
-
-						$parentFile = FileSystem::FindFile(substr($name, 0, $pos));
-						if (!isset($parentFile) && $functionFile)
-						{
-							# If we found the function page, then we can figure out the parent
-							$parentFile = $this->findParent($functionFile);
-						}
-
-						if ($functionFile && ($pos !== false))
-						{
-							$output = '';
-							if ($parentFile)
-							{
-								$output = '<span class="className">';
-									$output .= '<a href="/' . $this->PageAddress($parentFile) . '">' . substr($name, 0, $pos) . '</a>';
-								$output .= '</span>';
-							} else {
-								$output = substr($name, 0, $pos);
-							}
-							$output .= substr($name, $pos, 1);
-							$output .= '<span class="method">';
-								$output .= '<a ' . ($parentFile !== null ? ('href="/' . $this->PageAddress($parentFile)) : 'target="_blank"') . '">' . substr($name, $pos + 1) . '</a>';
-							$output .= '</span>';
-
-							return $output;
-						} else {
-							return $name; // don't replace it
-						}
-					},
+				$code = preg_replace(
+					'/\/\/(.*?)\n/',
+					'<span class="comment">//$1</span>',
 					$code
 				);
-				
-			} elseif ($this->config['code_language'] == 'c++') {
-				foreach($this->cpp_keywords as $keyword)
-				{
-					$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
-				}
 
-				$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
-				$code = preg_replace('#/\*(.*?)\*/#s', '<span class="multiline-comment">/* $1 */</span>', $code);
+				$code = preg_replace(
+					'#/\*(.*?)\*/#s',
+					'<span class="multiline-comment">/* $1 */</span>',
+					$code
+				);
 			}
 
 			return $code;
@@ -1054,9 +1017,8 @@
 		protected function buildAdded($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
-			}
 
 			$html = '<h1>';
 				$html .= 'Recently Added';
@@ -1077,9 +1039,8 @@
 		protected function buildJIT($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
-			}
 
 			$html = '<h1>';
 				$html .= 'Recently Added JIT Supported';
@@ -1099,9 +1060,8 @@
 		// Figures out & returns the version the given page was added, it searches for the <added> tag
 		protected function getAdded($text)
 		{
-			if (preg_match('/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/', $text, $matches)) {
+			if (preg_match('/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/', $text, $matches))
 				return $matches[1];
-			}
 
 			return null;
 		}
@@ -1109,9 +1069,8 @@
 		protected function buildChanged($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
-			}
 
 			$html = '<h1>';
 				$html .= 'Recently Changed';
@@ -1207,9 +1166,8 @@
 						'type' => $type,
 					);
 
-					if ($realm !== null) {
+					if ($realm !== null)
 						$retArray['realm'] = $realm;
-					}
 
 					$ret[] = $retArray;
 				}
@@ -1225,9 +1183,7 @@
 					$desc = trim($match[6]);
 
 					if (isset($default) && $default == ' ')
-					{
 						$default = '""';
-					}
 
 					$retArray = array(
 						'name' => $name,
@@ -1236,13 +1192,11 @@
 						'optional' => $optional,
 					);
 
-					if ($default !== null) {
+					if ($default !== null)
 						$retArray['default'] = $default;
-					}
 
-					if ($realm !== null) {
+					if ($realm !== null)
 						$retArray['realm'] = $realm;
-					}
 
 					$ret[] = $retArray;
 				}
@@ -1253,9 +1207,8 @@
 
 		function description($text)
 		{
-			if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
+			if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches))
 				return strip_tags($this->text($matches[1], true));
-			}
 
 			return 'No description? Have a cookie :3';
 		}
@@ -1266,18 +1219,16 @@
 			$lines = explode("\n", $text);
 
 			foreach ($lines as &$line) {
-				if (!preg_match('/^#/', $line) && preg_match('/\s{4}$/', $line)) {
+				if (!preg_match('/^#/', $line) && preg_match('/\s{4}$/', $line))
 					$line .= '<br>';
-				}
 			}
 
 			$text = implode("\n", $lines);
 			if ($preView)
-			{
 				$text = preg_replace('/`(.*?)`/', '$1', $text);
-			} else {
+			else
 				$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
-			}
+
 			$sourceText = $text;
 
 			/*
@@ -1462,25 +1413,20 @@
 
 					$textContent = $matches[4];
 
-					if (preg_match('/<jit\s+version="([^"]+)">/s', $textContent, $matches)) {
+					if (preg_match('/<jit\s+version="([^"]+)">/s', $textContent, $matches))
 						$function['jit'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<unsafe\s+version="([^"]+)">/s', $textContent, $matches)) {
+					if (preg_match('/<unsafe\s+version="([^"]+)">/s', $textContent, $matches))
 						$function['unsafe'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches)) {
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches))
 						$function['desc'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches)) {
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches))
 						$function['source'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) { # Used by enums
+					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) # Used by enums
 						$function['value'] = trim($matches[1]);
-					}
 
 					if (preg_match('/<realm>(.*?)<\/realm>/s', $textContent, $matches)) {
 						$data = $this->getRealm($matches[1]);
@@ -1491,13 +1437,11 @@
 						$function['realmdesc'] = "No";
 					}
 
-					if (preg_match('/<args>(.*?)<\/args>/s', $textContent, $matches)) {
+					if (preg_match('/<args>(.*?)<\/args>/s', $textContent, $matches))
 						$function['args'] = $this->getStuff(trim($matches[1]), 'args', 'arg');
-					}
 
-					if (preg_match('/<rets>(.*?)<\/rets>/s', $textContent, $matches)) {
+					if (preg_match('/<rets>(.*?)<\/rets>/s', $textContent, $matches))
 						$function['rets'] = $this->getStuff(trim($matches[1]), 'rets', 'ret');
-					}
 
 					return $this->buildFunction($function);
 				}
@@ -1516,21 +1460,17 @@
 
 					$textContent = $matches[2];
 
-					if (preg_match('/<\/replicated>/s', $textContent, $matches)) {
+					if (preg_match('/<\/replicated>/s', $textContent, $matches))
 						$function['replicated'] = true;
-					}
 
-					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches)) {
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches))
 						$function['desc'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches)) {
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches))
 						$function['source'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) { # Used by enums
+					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) # Used by enums
 						$function['value'] = trim($matches[1]);
-					}
 
 					if (preg_match('/<realm>(.*?)<\/realm>/s', $textContent, $matches)) {
 						$data = $this->getRealm($matches[1]);
@@ -1555,9 +1495,8 @@
 
 					$content = $matches[4];
 
-					if (preg_match('/<summary>\s*(.*?)\s*<\/summary>/s', $content, $matches2)) {
+					if (preg_match('/<summary>\s*(.*?)\s*<\/summary>/s', $content, $matches2))
 						$type['summ'] = trim($matches2[1]);
-					}
 
 					return $this->buildType($type);
 				}
@@ -1569,13 +1508,11 @@
 					$structure = array();
 					$content = $matches[1];
 
-					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches)) {
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches))
 						$structure['desc'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches)) {
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches))
 						$structure['src'] = trim($matches[1]);
-					}
 
 					if (preg_match('/<realm>(.*?)<\/realm>/s', $content, $matches)) {
 						$data = $this->getRealm($matches[1]);
@@ -1587,9 +1524,8 @@
 						$structure['realmdesc'] = "No";
 					}
 
-					if (preg_match('/<fields>(.*?)<\/fields>/s', $content, $matches)) {
+					if (preg_match('/<fields>(.*?)<\/fields>/s', $content, $matches))
 						$structure['fields'] = $this->getStuff($matches[1], 'fields', 'item');
-					}
 
 					return $this->buildStructure($structure);
 				}
@@ -1601,13 +1537,11 @@
 					$enums = array();
 					$content = $matches[1];
 
-					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches)) {
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches))
 						$enums['desc'] = trim($matches[1]);
-					}
 
-					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches)) {
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches))
 						$enums['src'] = trim($matches[1]);
-					}
 
 					if (preg_match('/<realm>(.*?)<\/realm>/s', $content, $matches)) {
 						$data = $this->getRealm($matches[1]);
@@ -1618,9 +1552,8 @@
 						$enums['realmdesc'] = "No";
 					}
 
-					if (preg_match('/<items>(.*?)<\/items>/s', $content, $matches)) {
+					if (preg_match('/<items>(.*?)<\/items>/s', $content, $matches))
 						$enums['items'] = $this->getStuff(trim($matches[1]), 'items', 'item');
-					}
 
 					return $this->buildEnums($enums);
 				}
@@ -1666,10 +1599,10 @@
 		{
 			$markup = $this->text($text, true);
 
-			if (preg_match_all('/<p>([\s\S]*?)<\/p>/', $markup, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
+			if (preg_match_all('/<p>([\s\S]*?)<\/p>/', $markup, $matches, PREG_SET_ORDER))
+				{
+				foreach ($matches as $match)
 					$markup = str_replace('<p>' . $match[1] . '</p>', $match[1], $markup);
-				}
 			}
 
 			return $markup;
@@ -1679,9 +1612,7 @@
 		{
 			$title = $this->config['name'];
 			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches))
-			{
 				$title = $matches[1];
-			}
 
 			$html = '<h1 class="pagetitle" id="pagetitle">' . $title .'</h1>';
 			$html .= '<div class="markdown" id="pagecontent">';
@@ -1696,14 +1627,10 @@
 			$Block = parent::blockMarkup($Line);
 
 			if (!isset($Block['name']))
-			{
 				return;
-			}
 
 			if (strcmp($Block['name'], 'image') == 0 && !str_contains($Line['text'], 'class="image"'))
-			{
 				$Block['element']['rawHtml'] = substr($Line['text'], 0, -2) . ' class="image"/>';
-			}
 
 			return $Block;
 		}
