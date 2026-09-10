@@ -3,6 +3,7 @@
 		Broadcasts an announcement
 	</description>
 	<realm>Server</realm>
+	<group>Networking</group>
 	<args>
 		<arg name="text" type="string">Text to display</arg>
 		<arg name="time" type="number" default="nil">Time to display. If `nil` it will calculate a time based off the text length</arg>

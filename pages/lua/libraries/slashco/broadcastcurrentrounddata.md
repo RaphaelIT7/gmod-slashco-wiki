@@ -7,6 +7,7 @@
 		Additionally broadcasts the SlasherData... which is just the same as above?<br>
 	</description>
 	<realm>Server</realm>
+	<group>Networking</group>
 	<args>
 		<arg name="readyGame" type="boolean">`true` when the game is setup and ready to start</arg>
 	</args>

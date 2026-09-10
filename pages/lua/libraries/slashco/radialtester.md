@@ -5,6 +5,7 @@
 		If all tested directions are blocked, the angle with the greatest traced distance is returned<br>
 	</description>
 	<realm>Server</realm>
+	<group>Locators</group>
 	<args>
 		<arg name="ent" type="Entity">The entity from which the traces are performed.</arg>
 		<arg name="dist" type="number">The distance to trace in each direction.</arg>

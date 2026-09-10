@@ -29,19 +29,19 @@ When the player cannot see the skybox, such as inside a basement, the fog closes
 The final fog distance is also always affected by the lighting at the player's position.<br>
 
 ## Fog Multipliers
-A fog entry can specify a `multiplier` using <page>SlashCo.AddFog</page>. This multiplier is applied to the dynamically calculated fog start and end distances.<br>
+A fog entry can specify a <page>FogInfo#multiplier</page> using <page>SlashCo.AddFog</page>. This multiplier is applied to the dynamically calculated fog start and end distances.<br>
 A multiplier greater than `1` increases the fog distance, while a multiplier less than `1` brings the fog closer.
 
 ## Fog Colors
 Fog entries can optionally modify the world fog color using:<br>
-- `worldColorR`<br>
-- `worldColorG`<br>
-- `worldColorB`<br>
+- <page>FogInfo#worldColorR</page><br>
+- <page>FogInfo#worldColorG</page><br>
+- <page>FogInfo#worldColorB</page><br>
 
 Color scaling can additionally be controlled using:<br>
-- `worldColorScaleR`<br>
-- `worldColorScaleG`<br>
-- `worldColorScaleB`<br>
+- <page>FogInfo#worldColorScaleR</page><br>
+- <page>FogInfo#worldColorScaleG</page><br>
+- <page>FogInfo#worldColorScaleB</page><br>
 
 The final color is calculated by multiplying each color component by its corresponding color scale.
 

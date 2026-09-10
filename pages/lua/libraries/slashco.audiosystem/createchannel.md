@@ -8,6 +8,7 @@
 		</note>
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="soundFile" type="string">The soundFile to play</arg>
 		<arg name="mode" type="string">The mode's to use, can be any of the flags from <link url=https://wiki.facepunch.com/gmod/sound.PlayURL>sound.PlayURL</link></arg>

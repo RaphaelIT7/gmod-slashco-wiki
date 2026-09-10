@@ -149,17 +149,17 @@ hr {
   padding: 10px 5px;
   top: 0px;
   z-index: 500;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-bottom: 1px solid #fff;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 .contentbar span.normal {
   display: flex;
   align-items: center;
   font-size: 12px;
   padding: 4px 8px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
   border-radius: 4px;
-  color: #666;
+  color: #aaa;
 }
 .contentbar > div, .contentbar > button, .contentbar > input, .contentbar > a {
   margin: 0 5px;
@@ -174,7 +174,7 @@ hr {
   display: flex;
   align-items: center;
   padding: 5px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 3px;
   color: #fff;
   font-size: 10px;
@@ -182,7 +182,7 @@ hr {
   font-weight: bolder;
 }
 .contentbar > a:hover, .contentbar > .grow > a:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.18);
 }
 .contentbar > a i.mdi, .contentbar > .grow > a i.mdi {
   font-size: 14px;
@@ -190,7 +190,7 @@ hr {
 .contentbar input[type=text] {
   width: 100%;
   border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   font-size: 11px;
   padding: 5px;
 }
@@ -716,7 +716,7 @@ hr {
 }
 
 .markdown > .member .member_line {
-  background-color: white;
+  background-color: #222222;
   padding: 16px;
 }
 .markdown > .member span.name {
@@ -729,7 +729,7 @@ hr {
   font-weight: bold;
 }
 .markdown > .member .function_arguments .default, .markdown > .member .function_returns .default {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(200, 200, 200, 0.4);
   padding: 2px;
 }
 
@@ -950,7 +950,7 @@ hr {
   margin-bottom: 32px;
 }
 .markdown .struct .member:has(:target), .markdown .struct .parameter:has(:target), .markdown .shader .member:has(:target), .markdown .shader .parameter:has(:target) {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.06);
   padding: 10px;
   padding-right: 20px;
   padding-bottom: 5px;
@@ -1167,6 +1167,7 @@ hr {
   padding-top: 10px;
   display: flex;
   flex-direction: column;
+  background-color: #383c3e;
 }
 #sidebar > div > div {
   overflow-y: auto;
@@ -1195,7 +1196,7 @@ hr {
   border-radius: 5px;
 }
 #sidebar ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.35);
 }
 #sidebar > div > div > ul > li > details > summary > a {
   font-weight: bold;
@@ -1280,7 +1281,7 @@ hr {
   margin-bottom: 16px;
   padding-top: 16px;
   margin-top: 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 #sidebar .section > a, #sidebar .section > details.level1 > summary > div {
   height: 24px;
@@ -2111,7 +2112,7 @@ hr {
 .body > .footer {
   display: flex;
   padding: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 .body > .footer > div {
   display: flex;
@@ -2145,14 +2146,14 @@ hr {
   padding-left: 8px;
   margin-right: -8px;
   padding-right: 8px;
-  color: #555;
+  color: #999;
 }
 .body > .footer > div > div ul li a:hover {
   color: #0082ff;
 }
 .body > .footer > div > div ul li a.active {
-  background-color: #fff;
-  color: #0082ff;
+  background-color: #0082ff;
+  color: #fff;
 }
 .body > .footer > div > div ul li i {
   font-size: 14px;
@@ -26818,8 +26819,8 @@ a.struct_anchor_link.rc.rm.rs::after {
   color: #0082ff;
 }
 .body-tabs ul li a.active {
-  background: #fff;
-  color: #555;
+  background: #0082ff;
+  color: #fff;
   opacity: 1;
   font-weight: bold;
 }

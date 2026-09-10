@@ -5,6 +5,7 @@
 		<internal></internal>
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="identifier" type="string">The identifier to search for</arg>
 		<arg name="entIndex" type="number">The <link url="https://wiki.facepunch.com/gmod/Entity:EntIndex">Entity:EntIndex</link> to search for</arg>

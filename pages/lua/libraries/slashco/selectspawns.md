@@ -4,6 +4,7 @@
 		Forced entries are selected first, followed by non-forced entries if additional selections are required.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="elements" type="table">Sequential table of spawn entities</arg>
 		<arg name="amount" type="number">

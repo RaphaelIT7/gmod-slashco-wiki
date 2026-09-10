@@ -5,6 +5,7 @@
 		If the round has already been aborted, additional calls do not create another round-over timer.
 	</description>
 	<realm>Server</realm>
+	<group>Round</group>
 	<args>
 		<arg name="reason" type="string">Reason the round is being aborted</arg>
 	</args>

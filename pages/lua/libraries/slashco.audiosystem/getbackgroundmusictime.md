@@ -3,6 +3,7 @@
 		Returns the current background music time syncronized with all players.
 	</description>
 	<realm>Client</realm>
+	<group>Background Music</group>
 	<rets>
 		<ret name="time" type="number">What the current background music time is supposed to be</ret>
 	</rets>

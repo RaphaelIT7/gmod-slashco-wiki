@@ -3,6 +3,7 @@
 		Looks up the given Bind and returns the [BUTTON_CODE](https://wiki.facepunch.com/gmod/Enums/BUTTON_CODE)
 	</description>
 	<realm>Client</realm>
+	<group>Keyboard</group>
 	<args>
 		<arg name="name" type="string">Bind</arg>
 	</args>

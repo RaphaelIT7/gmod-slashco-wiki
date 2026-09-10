@@ -3,4 +3,5 @@
 		Enables the <page text="Global Fog">Fog</page>
 	</description>
 	<realm>Shared</realm>
+	<group>Fog</group>
 </function>

@@ -3,6 +3,7 @@
 		Returns a copy of the given Color allowing you to safely modify it.
 	</description>
 	<realm>Shared</realm>
+	<group>Colors</group>
 	<args>
 		<arg name="color" type="Color">The color to copy</arg>
 	</args>

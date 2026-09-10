@@ -4,6 +4,7 @@
 		For slashers this respects the value of <page>Player:GetCanSeePlayers</page> returning an empty table if thir blind<br>
 	</description>
 	<realm>Shared</realm>
+	<group>Visibility</group>
 	<args>
 		<arg name="distance" type="number">Maximum distance to check for</arg>
 		<arg name="radius" type="number">

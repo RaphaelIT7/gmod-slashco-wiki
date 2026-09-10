@@ -3,6 +3,7 @@
 		Returns the current PlaybackRate of the background music.
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="fallback" type="number" default="1">The fallback playbackRate to return if there currently is none</arg>
 	</args>

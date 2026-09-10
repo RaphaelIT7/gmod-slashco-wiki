@@ -4,4 +4,5 @@
 		Resets the lobby data to its default state.
 	</description>
 	<realm>Server</realm>
+	<group>Lobby</group>
 </function>

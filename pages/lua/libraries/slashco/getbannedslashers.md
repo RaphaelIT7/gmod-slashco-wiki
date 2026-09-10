@@ -3,6 +3,7 @@
 		Returns a table containing all banned slashers
 	</description>
 	<realm>Server</realm>
+	<group>Slasher</group>
 	<args>
 		<arg name="onlyReversed" type="boolean" default="nil">
 			If `true` then the result table will only contain `slasherName = true`

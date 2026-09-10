@@ -3,6 +3,7 @@
 		Destroys the given channel.
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="channel" type="IGModAudioChannel">The channel to destory</arg>
 		<arg name="fadeOutTime" type="number" default="nil">Time in seconds on how long it takes for the channel to fade out before it's destroyed</arg>

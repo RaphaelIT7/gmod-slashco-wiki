@@ -74,6 +74,12 @@ function GetConfig()
 					'path' => 'lua/classes',
 					'tags' => 'true',
 				),
+				array(
+					'mdi' => 'mdi-table',
+					'name' => 'DataTable',
+					'path' => 'lua/datatable',
+					'tags' => 'true',
+				),
 				/*array(
 					'mdi' => 'mdi-format-list-numbered',
 					'name' => 'Enums',

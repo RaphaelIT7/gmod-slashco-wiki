@@ -5,6 +5,7 @@
 		If no override applies, the player's `SlashCoSeeFlashlights` networked boolean is returned.
 	</description>
 	<realm>Shared</realm>
+	<group>Visibility</group>
 	<rets>
 		<ret name="canSee" type="boolean">Whether the player can see flashlights</ret>
 	</rets>

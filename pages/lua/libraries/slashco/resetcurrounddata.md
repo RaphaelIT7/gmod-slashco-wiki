@@ -4,4 +4,5 @@
 		Resets all data associated with the current round to its default state.
 	</description>
 	<realm>Server</realm>
+	<group>Round</group>
 </function>

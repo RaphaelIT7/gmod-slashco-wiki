@@ -6,6 +6,7 @@
 		Overrides GMod `:StopSound` method
 	</description>
 	<realm>Server</realm>
+	<group>Networked Audio</group>
 	<args>
 		<arg name="soundPath" type="string"></arg>
 	</args>

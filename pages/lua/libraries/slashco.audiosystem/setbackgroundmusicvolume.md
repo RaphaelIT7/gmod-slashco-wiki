@@ -6,6 +6,7 @@
 		</note>
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="volume" type="number" default="1"></arg>
 	</args>

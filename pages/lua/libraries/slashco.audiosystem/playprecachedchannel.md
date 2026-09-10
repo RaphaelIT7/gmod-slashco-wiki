@@ -3,6 +3,7 @@
 		Plays the precached sound if it exists.
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="identifier" type="string">The identifier to use for this sound</arg>
 	</args>

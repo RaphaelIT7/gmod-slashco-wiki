@@ -5,6 +5,7 @@
 		Invalid, invisible, or dormant entities are removed from the entity list before the halos are drawn.
 	</description>
 	<realm>Client</realm>
+	<group>Client Utility</group>
 	<args>
 		<arg name="ents" type="table<Entity>">
 			The table containing the entities to draw halos around.<br>

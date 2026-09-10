@@ -4,6 +4,7 @@
 		Useful for UI when wanting to display the key for an action.<br>
 	</description>
 	<realm>Client</realm>
+	<group>Keyboard</group>
 	<args>
 		<arg name="name" type="string">Bind</arg>
 	</args>

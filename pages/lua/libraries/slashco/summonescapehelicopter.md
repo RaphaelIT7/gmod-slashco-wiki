@@ -4,6 +4,7 @@
 		If the helicopter has already been summoned, this returns true
 	</description>
 	<realm>Server</realm>
+	<group>Helicopter</group>
 	<args>
 		<arg name="distress" type="boolean">Whether the helicopter was summoned using the distress beacon</arg>
 	</args>

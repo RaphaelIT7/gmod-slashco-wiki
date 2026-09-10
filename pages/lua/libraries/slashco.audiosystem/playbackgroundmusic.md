@@ -4,6 +4,7 @@
 		<internal></internal>
 	</description>
 	<realm>Client</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="soundFile" type="string">The soundFile to play</arg>
 	</args>

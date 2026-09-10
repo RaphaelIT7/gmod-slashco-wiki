@@ -7,6 +7,7 @@
 		Internally just calls <page>SlashCo.LocalizedTraceHullLocator</page>
 	</description>
 	<realm>Server</realm>
+	<group>Positioning</group>
 	<args>
 		<arg name="minRange" type="number">minimum distance away</arg>
 		<arg name="range" type="number" default="minRange">

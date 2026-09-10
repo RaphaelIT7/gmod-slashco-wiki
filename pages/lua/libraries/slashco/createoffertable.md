@@ -3,6 +3,7 @@
 		Spawns the offering table at the specified position and angle.
 	</description>
 	<realm>Server</realm>
+	<group>Entity Creation</group>
 	<args>
 		<arg name="pos" type="Vector">The position where the offering table should be spawned.</arg>
 		<arg name="ang" type="Angle">The angles the offering table should be spawned with.</arg>

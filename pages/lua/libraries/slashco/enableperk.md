@@ -5,6 +5,7 @@
 		Can only be processed while in the lobby.
 	</description>
 	<realm>Client</realm>
+	<group>Perks</group>
 	<args>
 		<arg name="perkID" type="string">ID of the perk to enable</arg>
 	</args>

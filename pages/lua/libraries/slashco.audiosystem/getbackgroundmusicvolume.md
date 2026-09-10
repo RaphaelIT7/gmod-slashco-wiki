@@ -3,6 +3,7 @@
 		Returns the current volume of the background music.
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="fallback" type="number" default="1">The fallback volme to return if there currently is none</arg>
 	</args>

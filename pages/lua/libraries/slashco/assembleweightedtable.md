@@ -5,6 +5,7 @@
 		or a default weight of 10 when no weight is specified.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="elements" type="table<Entity>">Sequential table of entities to consider</arg>
 		<arg name="conditions" type="function" default="SlashCo.DefaultConditions">

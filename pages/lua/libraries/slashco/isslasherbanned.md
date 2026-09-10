@@ -3,6 +3,7 @@
 		Checks if the given Slasher is banned
 	</description>
 	<realm>Server</realm>
+	<group>Slasher</group>
 	<args>
 		<arg name="name" type="string">SlasherID/SlasherName</arg>
 	</args>

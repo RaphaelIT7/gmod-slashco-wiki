@@ -5,6 +5,7 @@
 		and not have its `Forced` property enabled.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="ent" type="Entity">Spawn entity to check</arg>
 	</args>

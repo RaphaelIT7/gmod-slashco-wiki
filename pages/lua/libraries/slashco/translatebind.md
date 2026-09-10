@@ -3,6 +3,7 @@
 		Looks up the given Bind and returns the name.
 	</description>
 	<realm>Client</realm>
+	<group>Keyboard</group>
 	<args>
 		<arg name="name" type="string">Bind</arg>
 	</args>

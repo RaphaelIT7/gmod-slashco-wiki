@@ -3,6 +3,7 @@
 		Adds a player to the current round's list of survivors if they are not already present.
 	</description>
 	<realm>Server</realm>
+	<group>Round</group>
 	<args>
 		<arg name="ply" type="Player">The player to add as a late survivor.</arg>
 	</args>

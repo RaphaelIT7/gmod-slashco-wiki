@@ -4,6 +4,7 @@
 		If an identical fog entry already exists, no update is sent.
 	</description>
 	<realm>Server</realm>
+	<group>Fog</group>
 	<args>
 		<arg name="info" type="FogInfo">Fog configuration to add or update</arg>
 	</args>

@@ -7,4 +7,5 @@
 		And if `SlashCo.CurrentLang` is outdated (indicating a language change), it will trigger <page>SlashCo:LanguageChanged</page>
 	</description>
 	<realm>Client</realm>
+	<group>Language</group>
 </function>

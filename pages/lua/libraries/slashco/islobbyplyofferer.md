@@ -3,6 +3,7 @@
 		Returns `true` if the given player started the current offering
 	</description>
 	<realm>Shared</realm>
+	<group>Lobby</group>
 	<args>
 		<arg name="ply" type="Player">The player to check</arg>
 	</args>

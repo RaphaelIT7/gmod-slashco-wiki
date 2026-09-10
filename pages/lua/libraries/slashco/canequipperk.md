@@ -6,6 +6,7 @@
 		Returns a failure reason and, for conflicts, the conflicting perk definition.
 	</description>
 	<realm>Shared</realm>
+	<group>Perks</group>
 	<args>
 		<arg name="ply" type="Player">Player attempting to equip the perk</arg>
 		<arg name="checkPerkID" type="string">ID of the perk to check</arg>

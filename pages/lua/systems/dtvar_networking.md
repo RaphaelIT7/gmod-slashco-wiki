@@ -25,3 +25,21 @@ Player:SetPoints(number value)
 local value = Player:GetPoints(number fallback = 0)
 	</code>
 </example>
+
+# Registered Variables
+Every Get/Set function pair created this way is documented under the **DataTable** category:<br>
+
+- <page>Player:GetExperience</page> / <page>Player:SetExperience</page>
+- <page>Player:GetPoints</page> / <page>Player:SetPoints</page>
+- <page>Player:GetSurvivorRoundsWon</page> / <page>Player:SetSurvivorRoundsWon</page>
+- <page>Player:GetSlasherRoundsWon</page> / <page>Player:SetSlasherRoundsWon</page>
+- <page>Player:GetPerception</page> / <page>Player:SetPerception</page>
+- <page>Player:GetEyeSight</page> / <page>Player:SetEyeSight</page>
+- <page>Player:GetDeafenTime</page> / <page>Player:SetDeafenTime</page>
+- <page>Player:GetCanSeePlayers</page> / <page>Player:SetCanSeePlayers</page>
+- <page>Player:GetWasSeenBySlasher</page> / <page>Player:SetWasSeenBySlasher</page>
+- <page>Player:GetVisible</page> / <page>Player:SetVisible</page> (aliased as <page>Player:IsVisible</page>)
+- <page>Player:GetCanSeeFlashlights</page> / <page>Player:SetCanSeeFlashlights</page>
+- <page>Player:GetOwnedPerks</page> / <page>Player:SetOwnedPerks</page>
+- <page>Player:GetActiveEffects</page> / <page>Player:SetActiveEffects</page>
+- <page>Player:GetPickedSlasher</page> / <page>Player:SetPickedSlasher</page>

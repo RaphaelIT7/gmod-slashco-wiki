@@ -3,6 +3,7 @@
 		Returns the current soundFile of the background music.
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="fallback" type="string" default="">The fallback soundFile to return if there currently is none</arg>
 	</args>

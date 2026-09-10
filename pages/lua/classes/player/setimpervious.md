@@ -4,6 +4,7 @@
 		If enabled, a player will have no collisions with other players or doors.<br>
 	</description>
 	<realm>Shared</realm>
+	<group>Damage</group>
 	<args>
 		<arg name="impervious" type="bool"></arg>
 	</args>

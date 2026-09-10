@@ -4,6 +4,7 @@
 		This function does nothing while `g_SlashCoDebug` is enabled.
 	</description>
 	<realm>Server</realm>
+	<group>Map</group>
 	<args>
 		<arg name="mapName" type="string">The name of the map to change to.</arg>
 	</args>

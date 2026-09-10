@@ -4,6 +4,7 @@
 		Networks that the given player has given his choice for the ongoing vote
 	</description>
 	<realm>Server</realm>
+	<group>Lobby</group>
 	<args>
 		<arg name="ply" type="Player"></arg>
 	</args>

@@ -5,6 +5,7 @@
 		An optional callback can be used to modify an entity before it is spawned.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="elements" type="table">Sequential table of spawn entities</arg>
 		<arg name="spawnFunc" type="function" default="nil">

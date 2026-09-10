@@ -3,6 +3,7 @@
 		Registers or overrides a dangerlevel.
 	</description>
 	<realm>Shared</realm>
+	<group>Slasher</group>
 	<args>
 		<arg name="dangerLevel" type="DangerLevel">The table containing the dangerlevel data</arg>
 		<arg name="id" type="number" default="nil">

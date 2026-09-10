@@ -4,6 +4,7 @@
 		Loads all map configs.
 	</description>
 	<realm>Shared</realm>
+	<group>Map</group>
 	<args>
 		<arg name="initialCheck" type="boolean" default="nil">When initially called internally `true` is given.</arg>
 	</args>

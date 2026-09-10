@@ -6,6 +6,7 @@
 		Alias of <page>SlashCo.LocalizedTraceHullLocator</page>
 	</description>
 	<realm>Server</realm>
+	<group>Locators</group>
 	<args>
 		<arg name="ent" type="Entity">entity to use as centery</arg>
 		<arg name="minRange" type="number">minimum distance away</arg>

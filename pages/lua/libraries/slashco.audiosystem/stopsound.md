@@ -3,6 +3,7 @@
 		Stops the sound matching the given information
 	</description>
 	<realm>Shared</realm>
+	<group>Playback</group>
 	<args>
 		<arg name="identifier" type="string">The sound identifier</arg>
 		<arg name="fadeOut" type="number" default="0">How many seconds it takes for it to fade out</arg>

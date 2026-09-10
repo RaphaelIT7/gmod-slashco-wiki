@@ -3,6 +3,7 @@
 		Sets the current PlaybackRate of the background music.
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="playbackRate" type="number" default="1"></arg>
 	</args>

@@ -1,11 +1,13 @@
 <function name="LobbyBanter" parent="SlashCo" type="libraryfunc">
 	<description>
+		<internal></internal>
 		Starts a randomly selected survivor conversation in the lobby<br>
 		Survivors are assigned to the individual conversation parts and the voice lines are played with their appropriate timing<br>
 		<br>
 		Returns a delay representing the total duration of the conversation
 	</description>
 	<realm>Server</realm>
+	<group>Voicelines</group>
 	<rets>
 		<ret name="duration" type="number">
 			The total duration of the conversation, including its initial delay.<br>

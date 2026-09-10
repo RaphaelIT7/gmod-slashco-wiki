@@ -3,4 +3,5 @@
 		Removes the current SlashCo helicopter if it is valid
 	</description>
 	<realm>Server</realm>
+	<group>Helicopter</group>
 </function>

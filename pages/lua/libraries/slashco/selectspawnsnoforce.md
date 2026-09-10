@@ -6,6 +6,7 @@
 		When `amount` is greater than 1, a table of selected elements and the number of missed entries are returned.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="elements" type="table<Entity>">Sequential table of spawn entities</arg>
 		<arg name="amount" type="number" default="1">Number of entries to select</arg>

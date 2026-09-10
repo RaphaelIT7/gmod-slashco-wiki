@@ -6,4 +6,5 @@
 		Stops all global sounds for this entity
 	</description>
 	<realm>Server</realm>
+	<group>Networked Audio</group>
 </function>

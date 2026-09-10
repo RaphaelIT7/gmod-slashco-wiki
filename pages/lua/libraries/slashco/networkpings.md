@@ -5,6 +5,7 @@
 		This is expensive and should only be done when needed
 	</description>
 	<realm>Server</realm>
+	<group>Pings</group>
 	<args>
 		<arg name="ply" type="Player|table<Player>">The target player</arg>
 	</args>

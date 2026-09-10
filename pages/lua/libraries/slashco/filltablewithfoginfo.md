@@ -5,6 +5,7 @@
 		Scaled world color values are calculated after the applicable fog settings are merged.
 	</description>
 	<realm>Shared</realm>
+	<group>Fog</group>
 	<args>
 		<arg name="infoTbl" type="table">Table to populate with fog information</arg>
 		<arg name="ply" type="Player">Player whose applicable fog information should be used</arg>

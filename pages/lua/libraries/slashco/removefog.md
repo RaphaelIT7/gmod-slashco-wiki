@@ -4,6 +4,7 @@
 		If no matching fog entry exists, nothing is done.
 	</description>
 	<realm>Server</realm>
+	<group>Fog</group>
 	<args>
 		<arg name="name" type="string">Base name of the fog entry to remove</arg>
 		<arg name="value" type="number|Entity" default="nil" optional>

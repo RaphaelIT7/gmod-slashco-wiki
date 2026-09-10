@@ -4,6 +4,7 @@
 		This is needed as else a sound may not be found since paths are relative to the `garrysmod/` folder, **NOT** relative to the `sound/` folder.
 	</description>
 	<realm>Shared</realm>
+	<group>Sound Registration</group>
 	<args>
 		<arg name="soundFile" type="string">Input soundFile which may be missing `sound/`</arg>
 	</args>

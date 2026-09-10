@@ -5,6 +5,7 @@
 		If all spawn points are occupied, the oldest previously used spawn point is selected.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="ply" type="Player">Player to find a spawn point for</arg>
 	</args>

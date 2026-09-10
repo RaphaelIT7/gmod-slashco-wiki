@@ -4,6 +4,7 @@
 		<unused></unused>
 	</description>
 	<realm>Shared</realm>
+	<group>Sound Registration</group>
 	<args>
 		<arg name="registerName" type="string">The registered name to save it with</arg>
 		<arg name="soundData" type="SoundData">The SounData</arg>

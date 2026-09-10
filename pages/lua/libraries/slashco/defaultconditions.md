@@ -4,6 +4,7 @@
 		An entity passes if it is valid, is not disabled, and does not already have a spawned entity.
 	</description>
 	<realm>Server</realm>
+	<group>Spawning</group>
 	<args>
 		<arg name="ent" type="Entity">Spawn entity to check</arg>
 	</args>

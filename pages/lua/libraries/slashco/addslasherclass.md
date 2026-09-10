@@ -3,6 +3,7 @@
 		Registers or overrides a slasher class.
 	</description>
 	<realm>Shared</realm>
+	<group>Slasher</group>
 	<args>
 		<arg name="slasherClass" type="SlasherClass">The table containing the slasher class data</arg>
 		<arg name="id" type="number" default="nil">

@@ -3,6 +3,7 @@
 		Returns all channels that were parented to the given entity.
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="entity" type="number|Entity">Entity or entIndex to search with</arg>
 	</args>

@@ -3,4 +3,5 @@
 		Enables all env_soundscape entities on the map.
 	</description>
 	<realm>Server</realm>
+	<group>Soundscapes</group>
 </function>

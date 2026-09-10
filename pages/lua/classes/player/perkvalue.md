@@ -5,6 +5,7 @@
 		If no active perk provides the value, the fallback is returned.
 	</description>
 	<realm>Shared</realm>
+	<group>Perks</group>
 	<args>
 		<arg name="valueName" type="string">Name of the perk value to retrieve</arg>
 		<arg name="fallback" type="any">Value to return when no active perk provides the requested value</arg>

@@ -4,4 +4,5 @@
 		<internal>This function is mainly used while developing the audiosystem for testing</internal>
 	</description>
 	<realm>Client</realm>
+	<group>Background Music</group>
 </function>

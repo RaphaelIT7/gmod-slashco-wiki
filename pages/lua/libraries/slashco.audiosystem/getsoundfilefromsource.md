@@ -4,6 +4,7 @@
 		This function is specifically meant to be used for sounds registered using <link url="https://wiki.facepunch.com/gmod/sound.Add">sound.Add</link>
 	</description>
 	<realm>Shared</realm>
+	<group>Sound Registration</group>
 	<args>
 		<arg name="name" type="string">The sound name to lookup</arg>
 	</args>

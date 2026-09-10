@@ -4,6 +4,7 @@
 		In a round it will return the same volume as <page>SlashCo.AudioSystem.GetBackgroundMusicVolume</page>
 	</description>
 	<realm>Client</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="fallback" type="number" default="1">The fallback volme to return if there currently is none</arg>
 	</args>

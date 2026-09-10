@@ -5,6 +5,7 @@
 		<internal></internal>
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="channel" type="IGModAudioChannel"></arg>
 		<arg name="identifier" type="string">The new identifier</arg>

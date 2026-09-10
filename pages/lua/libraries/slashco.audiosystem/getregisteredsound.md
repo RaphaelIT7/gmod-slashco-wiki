@@ -3,6 +3,7 @@
 		Returns a copy of the given registered soundData
 	</description>
 	<realm>Shared</realm>
+	<group>Sound Registration</group>
 	<args>
 		<arg name="registerName" type="string">The registered name used for <page>SlashCo.AudioSystem.RegisterSound</page></arg>
 	</args>

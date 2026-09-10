@@ -3,6 +3,7 @@
 		Spawns a radio at the specified position and angle.
 	</description>
 	<realm>Server</realm>
+	<group>Entity Creation</group>
 	<args>
 		<arg name="pos" type="Vector">The position where the radio should be spawned.</arg>
 		<arg name="ang" type="Angle">The angles the radio should be spawned with.</arg>

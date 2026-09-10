@@ -3,6 +3,13 @@
 	<realm>Shared</realm>
 	<description>
 		Table structure used for <page>SlashCo.AudioSystem.PlaySound</page>
+		<note>
+			When the entity is set to the world, the sound is played as stereo and not 3D<br><br>
+			<page>SoundData#minDistance</page> and <page>SoundData#maxDistance</page> act as a fade-out range when moving too far away from the sound<br><br>
+			<page>SoundData#startDistance</page> and <page>SoundData#startEndDistance</page> act as a fade-out range when moving too close to the sound. <page>SoundData#startEndDistance</page> is the point where the sound reaches full volume while <page>SoundData#startDistance</page> is fully faded out<br><br>
+			All distance fields work regardless of the channel being 3D or not, allowing use with <page>SoundData#forceStereo</page> without issues<br><br>
+			Combining <page>SoundData#forceStereo</page> with <page>SoundData#dynamicPan</page> creates a fake 3D effect while preserving stereo audio quality
+		</note>
 	</description>
 	<fields>
 		<item name="soundPath" type="string">
@@ -129,17 +136,10 @@
 		</item>
 		<item name="sendToTeam" type="number" realm="Server">
 			to which team the sound should be sent to.<br>
-			**Important** Internally this just sets `sendToEntity` with the table of players.<br>
+			**Important** Internally this just sets <page>SoundData#sendToEntity</page> with the table of players.<br>
 		</item>
 		<item name="sendToEntity" type="table|Entity" realm="Server">
 			The table or the player to send the sound to
 		</item>
 	</fields>
-	<note>
-		When the entity is set to the world, the sound is played as mono and not 3D<br><br>
-		`minDistance` and `maxDistance act as a fade-out range when moving too far away from the sound<br><br>
-		`startDistance` and `startEndDistance` act as a fade-out range when moving too close to the sound. `startEndDistance` is the point where the sound reaches full volume while `startDistance` is fully faded out<br><br>
-		All distance fields work regardless of the channel being 3D or not, allowing use with `forceStereo` without issues<br><br>
-		Combining `forceStereo` with `dynamicPan` creates a fake 3D effect while preserving stereo audio quality
-	</notes>
 </structure>

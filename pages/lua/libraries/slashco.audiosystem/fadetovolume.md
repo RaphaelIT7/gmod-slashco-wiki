@@ -3,6 +3,7 @@
 		Fades the given channel to the given target volume over time
 	</description>
 	<realm>Client</realm>
+	<group>Playback</group>
 	<args>
 		<arg name="channel" type="IGModAudioChannel">The channel to use</arg>
 		<arg name="fadeTime" type="number" default="1">How many second it takes to fade the volume</arg>

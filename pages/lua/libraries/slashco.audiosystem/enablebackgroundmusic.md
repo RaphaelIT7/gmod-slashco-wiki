@@ -3,6 +3,7 @@
 		Enables the background music again after it was disabled using <page>SlashCo.AudioSystem.DisableBackgroundMusic</page>
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="forced" type="boolean" default="false">
 			Set this to `true` if you want to force enable it.

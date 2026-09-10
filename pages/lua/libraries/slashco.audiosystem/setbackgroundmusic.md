@@ -7,6 +7,7 @@
 		</note>
 	</description>
 	<realm>Shared</realm>
+	<group>Background Music</group>
 	<args>
 		<arg name="soundFile" type="string">The new soundFile</arg>
 		<arg name="volume" type="number" default="1"></arg>

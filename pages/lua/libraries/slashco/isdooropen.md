@@ -3,6 +3,7 @@
 		Returns whether the door is open or not
 	</description>
 	<realm>Shared</realm>
+	<group>Doors</group>
 	<args>
 		<arg name="ent" type="Entity">The Entity to check (If it's not a door, then `false` will be returned)</arg>
 	</args>

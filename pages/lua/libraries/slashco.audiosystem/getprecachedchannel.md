@@ -3,6 +3,7 @@
 		Returns the given precached channel using the identifier, returns nil on failure. If given a callback, it will use that function which will be more reliable.
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 	<args>
 		<arg name="identifier" type="string">The identifier to use for this sound</arg>
 		<arg name="callback" type="function">The callback function after creation

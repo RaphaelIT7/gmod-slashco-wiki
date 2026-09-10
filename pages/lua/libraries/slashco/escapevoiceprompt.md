@@ -4,4 +4,5 @@
 		When multiple survivors are present, survivors sufficiently separated from each other may each play a voice prompt
 	</description>
 	<realm>Server</realm>
+	<group>Voicelines</group>
 </function>

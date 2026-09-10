@@ -5,4 +5,5 @@
 		<internal></internal>
 	</description>
 	<realm>Client</realm>
+	<group>Channels</group>
 </function>

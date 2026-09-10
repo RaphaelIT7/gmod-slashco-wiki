@@ -3,6 +3,7 @@
 		Returns the <page>SlashCo.ReadyState</page> of the given player
 	</description>
 	<realm>Shared</realm>
+	<group>Lobby</group>
 	<args>
 		<arg name="ply" type="Player"></arg>
 	</args>

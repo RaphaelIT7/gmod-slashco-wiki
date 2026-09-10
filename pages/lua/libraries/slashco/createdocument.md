@@ -4,6 +4,7 @@
 		Returns `nil` if the document entity could not be created.
 	</description>
 	<realm>Server</realm>
+	<group>Entity Creation</group>
 	<args>
 		<arg name="pos" type="Vector">The position where the document should be spawned.</arg>
 		<arg name="ang" type="Angle">The angles the document should be spawned with.</arg>

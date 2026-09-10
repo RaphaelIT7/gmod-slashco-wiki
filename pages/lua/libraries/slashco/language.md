@@ -5,6 +5,7 @@
 		String arguments are recursively passed through SlashCo.Language before formatting.
 	</description>
 	<realm>Client</realm>
+	<group>Language</group>
 	<args>
 		<arg name="key" type="string">The language key to look up.</arg>
 		<arg name="..." type="any" optional>

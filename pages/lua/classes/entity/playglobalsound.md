@@ -6,6 +6,7 @@
 		Plays a global sound. This just calls <page>SlashCo.PlayGlobalSound</page> with ent being `this`
 	</description>
 	<realm>Server</realm>
+	<group>Networked Audio</group>
 	<args>
 		<arg name="soundPath" type="string"></arg>
 		<arg name="soundLevel" type="number"></arg>

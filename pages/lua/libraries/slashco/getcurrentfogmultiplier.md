@@ -6,6 +6,7 @@
 		When `infoTbl` is provided, applicable fog information is merged into it while searching.
 	</description>
 	<realm>Shared</realm>
+	<group>Fog</group>
 	<args>
 		<arg name="ply" type="Player">Player whose applicable fog should be determined</arg>
 		<arg name="infoTbl" type="table" default="nil" optional>Optional table to merge applicable fog information into</arg>

@@ -8,4 +8,5 @@
 	</description>
 	<value><page text="SlashCo.States.LOBBY">SlashCo.States</page></value>
 	<realm>Shared</realm>
+	<group>Round</group>
 </function>

@@ -4,6 +4,7 @@
 		<unused></unused>
 	</description>
 	<realm>Shared</realm>
+	<group>Playback</group>
 	<args>
 		<arg name="groupName" type="string">The sound identifier</arg>
 		<arg name="groupVolume" type="number">The target volume to fade to</arg>

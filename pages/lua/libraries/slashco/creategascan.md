@@ -4,6 +4,7 @@
 		Returns `nil` if the gas can entity could not be created.
 	</description>
 	<realm>Server</realm>
+	<group>Entity Creation</group>
 	<args>
 		<arg name="pos" type="Vector">The position where the gas can should be spawned.</arg>
 		<arg name="ang" type="Angle">The angles the gas can should be spawned with.</arg>

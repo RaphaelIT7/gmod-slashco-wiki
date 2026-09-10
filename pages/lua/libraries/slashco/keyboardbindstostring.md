@@ -8,6 +8,7 @@
 		Builds a string with all **valid** bindings to store it somewhere
 	</description>
 	<realm>Shared</realm>
+	<group>Keyboard</group>
 	<args>
 		<arg name="binds" type="table">A table with all binds</arg>
 	</args>

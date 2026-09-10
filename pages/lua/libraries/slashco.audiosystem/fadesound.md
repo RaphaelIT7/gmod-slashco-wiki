@@ -3,6 +3,7 @@
 		Fades the given sound to the given volume over the specified time
 	</description>
 	<realm>Shared</realm>
+	<group>Playback</group>
 	<args>
 		<arg name="identifier" type="string">The sound identifier</arg>
 		<arg name="fadeTime" type="number" default="0">How many seconds it takes for it to fade to the target volume</arg>

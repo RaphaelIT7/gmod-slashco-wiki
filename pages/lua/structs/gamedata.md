@@ -5,7 +5,7 @@
 		A Table containing various values as a performance improvement and for autorefresh support.<br>
 		The following fields exist by default.<br>
 		<note>
-			All Shared values are networked when a player joins the game, but only once, changing them while playing has no effect except for `MaxPlayers`.<br>
+			All Shared values are networked when a player joins the game, but only once, changing them while playing has no effect except for <page>GameData#MaxPlayers</page>.<br>
 		</note>
 	</description>
 	<fields>

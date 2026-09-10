@@ -5,6 +5,7 @@
 		Returns `nil` if the entity could not be created.
 	</description>
 	<realm>Server</realm>
+	<group>Entity Creation</group>
 	<args>
 		<arg name="class" type="string">The entity class to create.</arg>
 		<arg name="pos" type="Vector">The position where the entity should be spawned.</arg>
