@@ -170,20 +170,15 @@
 			foreach ($files as &$page)
 			{
 				$filePath = $path . '/' . $page;
-				$file = Filesystem::OpenFile($filePath);
-				if ($file === false)
-					continue;
-
-				$group = $this->Parser->GetPageGroup($file);
-				if (!isset($group) || trim($group) === '')
+				//$group = $this->Parser->GetPageGroup($filePath);
+				//if (!isset($group) || trim($group) === '')
 					$group = '';
 
 				if (!isset($groups[$group]))
 					$groups[$group] = array();
 
 				$groups[$group][] = array(
-					'path' => $filePath,
-					'file' => $file
+					'path' => $filePath
 				);
 			}
 
