@@ -1,4 +1,4 @@
-<title>Slasher</title>
+<title>SLASHER</title>
 <structure>
 	<realm>Shared</realm>
 	<description>
@@ -33,23 +33,23 @@
 		<item name="SpeedRating" type="string" optional>
 			A star-rating string (e.g. `"★★☆☆☆"`) shown in the slasher picker's description to indicate the Slasher's relative speed.<br>
 			<note>
-				Only required if <page>Slasher#IsSelectable</page> is `true` - the picker concatenates this value directly into the description text, so a selectable Slasher without it will error when hovered.
+				Only required if <page>SLASHER#IsSelectable</page> is `true` - the picker concatenates this value directly into the description text, so a selectable Slasher without it will error when hovered.
 			</note>
 		</item>
 		<item name="EyeRating" type="string" optional>
-			A star-rating string (e.g. `"★★★☆☆"`) shown in the slasher picker's description to indicate the Slasher's relative eyesight/vision. Same requirement as <page>Slasher#SpeedRating</page>.
+			A star-rating string (e.g. `"★★★☆☆"`) shown in the slasher picker's description to indicate the Slasher's relative eyesight/vision. Same requirement as <page>SLASHER#SpeedRating</page>.
 		</item>
 		<item name="DiffRating" type="string" optional>
-			A star-rating string shown in the slasher picker's description to indicate the Slasher's relative difficulty to play. Same requirement as <page>Slasher#SpeedRating</page>.
+			A star-rating string shown in the slasher picker's description to indicate the Slasher's relative difficulty to play. Same requirement as <page>SLASHER#SpeedRating</page>.
 		</item>
 		<item name="GasCanMod" type="number" default="0" realm="Server" optional>
 			How many gas cans should be added or removed for the round because this Slasher is in play. Allowed to be negative. Summed across every spawned Slasher when calculating the round's gas can count, and copied onto `SlashCo.CurRound.Slashers[steamID64].GasCanMod` when the Slasher is selected.
 		</item>
 		<item name="ForceGasCanCount" type="number" default="0" realm="Server" optional>
-			Summed (with a fallback of `0`) across every spawned Slasher alongside <page>Slasher#GasCanMod</page>; if the combined total is `0` or greater, it overrides the round's computed gas can count entirely instead of just modifying it.
+			Summed (with a fallback of `0`) across every spawned Slasher alongside <page>SLASHER#GasCanMod</page>; if the combined total is `0` or greater, it overrides the round's computed gas can count entirely instead of just modifying it.
 		</item>
 		<item name="ItemToSpawn" type="string" realm="Server" optional>
-			The ID of an <page>Item</page> that should always be spawned at an extra location for every round this Slasher is in (e.g. Sid spawns `"Cookie"`, Thirsty spawns `"MilkJug"`). Left unset, no extra forced item is spawned.
+			The ID of an <page>ITEM</page> that should always be spawned at an extra location for every round this Slasher is in (e.g. Sid spawns `"Cookie"`, Thirsty spawns `"MilkJug"`). Left unset, no extra forced item is spawned.
 		</item>
 		<item name="SpawnDelay" type="number" default="-1" realm="Server" optional>
 			How many seconds into an Escape round this Slasher should spawn after, overriding the difficulty-based delay. `-1` means no override. If multiple Slashers are in the round, the smallest override wins.
@@ -63,11 +63,11 @@
 		<item name="Eyesight" type="number" realm="Server">
 			Multiplied by `100` to get the field of view distance used by the per-tick chase-detection scan (<page>Player:FindPlayersInView</page>) and used to scale the Slasher's fog thickness (<page>SlashCo.AddFog</page>). Has no framework fallback, so every Slasher must set this.<br>
 			<note>
-				This is a separate mechanism from the networked, client-visible "eyesight" value returned by <page>Player:GetEyeSight</page> (which drives the slasher-vision screen brightness effect). By convention every Slasher pushes this field's value into that networked value itself, usually via `slasher:SetEyeSight(SLASHER.Eyesight)` inside its own <page>Slasher#OnSpawn</page>/<page>Slasher#OnTickBehaviour</page> - the generic framework does **not** copy it there automatically.
+				This is a separate mechanism from the networked, client-visible "eyesight" value returned by <page>Player:GetEyeSight</page> (which drives the slasher-vision screen brightness effect). By convention every Slasher pushes this field's value into that networked value itself, usually via `slasher:SetEyeSight(SLASHER.Eyesight)` inside its own <page>SLASHER#OnSpawn</page>/<page>SLASHER#OnTickBehaviour</page> - the generic framework does **not** copy it there automatically.
 			</note>
 		</item>
 		<item name="Perception" type="number" realm="Server" optional>
-			Not read by the generic framework directly. By convention every Slasher uses this field as the initial/base value it pushes into the networked <page>Player:GetPerception</page> value itself (usually via `slasher:SetPerception(SLASHER.Perception)` inside its own <page>Slasher#OnSpawn</page>/<page>Slasher#OnTickBehaviour</page>), which in turn is read generically by the framework (e.g. survivor footstep notice range, `sc_beerkeg`/`sc_activecrazyburger` stun duration).
+			Not read by the generic framework directly. By convention every Slasher uses this field as the initial/base value it pushes into the networked <page>Player:GetPerception</page> value itself (usually via `slasher:SetPerception(SLASHER.Perception)` inside its own <page>SLASHER#OnSpawn</page>/<page>SLASHER#OnTickBehaviour</page>), which in turn is read generically by the framework (e.g. survivor footstep notice range, `sc_beerkeg`/`sc_activecrazyburger` stun duration).
 		</item>
 		<item name="ChaseRange" type="number" default="600 (chase-detection tick) / 1000 (SlashCo.StartChaseMode)" realm="Server" optional>
 			Distance (in units) within which a Survivor can be spotted and put into chase. Two different fallbacks are used depending on which internal check reads it.
@@ -97,7 +97,7 @@
 			How many seconds the jumpscare freeze/animation lasts before the Survivor actually dies.
 		</item>
 		<item name="AngerPassiveGain" type="number" default="0" realm="Server" optional>
-			Anger gained automatically every second regardless of what the Slasher is doing, added on top of whatever <page>Slasher#OnAngerTick</page> does.
+			Anger gained automatically every second regardless of what the Slasher is doing, added on top of whatever <page>SLASHER#OnAngerTick</page> does.
 		</item>
 		<item name="CustomBackgroundMusic" type="boolean" default="false" realm="Server" optional>
 			If `true` for any Slasher in the round, the automatic ambient/anger background music system is skipped entirely, letting the Slasher(s) manage their own background music.
@@ -118,13 +118,13 @@
 			If `true` for any Slasher in the round, the special helicopter-arrival music is not played.
 		</item>
 		<item name="CannotBeSpectated" type="boolean" default="false" optional>
-			If `true`, spectators cannot spectate this Slasher (it's excluded from `SlashCo.GetSpectatableSet`, from spectator right-click targeting, and clientside <page>Slasher#CanBeSeen</page> always returns `false` for spectators looking at it).
+			If `true`, spectators cannot spectate this Slasher (it's excluded from `SlashCo.GetSpectatableSet`, from spectator right-click targeting, and clientside <page>SLASHER#CanBeSeen</page> always returns `false` for spectators looking at it).
 		</item>
 		<item name="OnBalanceForPlayers" type="function" realm="Server" optional>
-			Called with `(totalSurvivors, additionalSurvivors)` - note that unlike the other callbacks this is called directly on the table (no `slasher` argument) - whenever the survivor count for the round is known: once when the Slasher spawns, and once for every already-spawned Slasher of this type whenever `SlashCo.RegisterSlasher` runs again (e.g. on a Lua refresh). Typically used to scale balance fields such as <page>Slasher#ProwlSpeed</page> based on player count.
+			Called with `(totalSurvivors, additionalSurvivors)` - note that unlike the other callbacks this is called directly on the table (no `slasher` argument) - whenever the survivor count for the round is known: once when the Slasher spawns, and once for every already-spawned Slasher of this type whenever `SlashCo.RegisterSlasher` runs again (e.g. on a Lua refresh). Typically used to scale balance fields such as <page>SLASHER#ProwlSpeed</page> based on player count.
 		</item>
 		<item name="Precache" type="function" realm="Server" optional>
-			Called with no arguments by `SlashCo.PrecacheSlasher` when a round selects this Slasher, in addition to the automatic precaching of <page>Slasher#Model</page>, <page>Slasher#ChaseMusic</page> and <page>Slasher#KillSound</page>. Use it to precache any extra models/sounds/materials this Slasher needs.
+			Called with no arguments by `SlashCo.PrecacheSlasher` when a round selects this Slasher, in addition to the automatic precaching of <page>SLASHER#Model</page>, <page>SLASHER#ChaseMusic</page> and <page>SLASHER#KillSound</page>. Use it to precache any extra models/sounds/materials this Slasher needs.
 		</item>
 		<item name="OnSpawn" type="function" realm="Server" optional>
 			Called with no extra arguments right after this Slasher's player entity spawns, once run/walk speed and anger have been initialized.
@@ -139,7 +139,7 @@
 			Called with `(target)` once a jumpscare kill finishes and this Slasher has unfrozen again.
 		</item>
 		<item name="OnAngerTick" type="function" realm="Server" optional>
-			Called with no extra arguments once per second, alongside the automatic <page>Slasher#AngerPassiveGain</page> gain.
+			Called with no extra arguments once per second, alongside the automatic <page>SLASHER#AngerPassiveGain</page> gain.
 		</item>
 		<item name="OnPlayerDeath" type="function" realm="Server" optional>
 			Called with `(victim)` on every registered Slasher whenever any player dies (hook `SlashCo:PlayerDeath`), not just this Slasher's own kills.
@@ -160,7 +160,7 @@
 			Called with no extra arguments on every registered Slasher once both generators are activated and the escape helicopter is summoned.
 		</item>
 		<item name="OnItemSpawn" type="function" realm="Server" optional>
-			Called with `(itemCount)` (the round's updated `SlashCo.CurRound.ItemCount`) on every spawned Slasher after regular round items have been spawned, after <page>Slasher#ItemToSpawn</page> (if set) has been placed.
+			Called with `(itemCount)` (the round's updated `SlashCo.CurRound.ItemCount`) on every spawned Slasher after regular round items have been spawned, after <page>SLASHER#ItemToSpawn</page> (if set) has been placed.
 		</item>
 		<item name="PickUpAttempt" type="function" realm="Server" optional>
 			Called with `(ent)` whenever this Slasher tries to pick up `ent` with the use key. Returning a non-`nil` value overrides whether the pickup is allowed; Slashers cannot pick anything up by default.

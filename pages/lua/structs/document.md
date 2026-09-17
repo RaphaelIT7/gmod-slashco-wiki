@@ -29,7 +29,7 @@
 		<item name="AdditionalDescription" type="string" optional>An extra description shown once the player has survived the Slasher.</item>
 		<item name="Aliases" type="table" optional>
 			A list of alternate name strings shown alongside the document, translated through the language key `Alias_<name>`.<br>
-			If not set, falls back to the matching <page>Slasher</page>'s own <page>Slasher#Aliases</page> field.
+			If not set, falls back to the matching <page>SLASHER</page>'s own <page>SLASHER#Aliases</page> field.
 		</item>
 	</fields>
 </structure>

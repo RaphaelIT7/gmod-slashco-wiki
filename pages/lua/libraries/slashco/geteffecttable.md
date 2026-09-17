@@ -8,6 +8,6 @@
 		<arg name="name" type="string">Name of the effect to retrieve.</arg>
 	</args>
 	<rets>
-		<ret name="effectTbl" type="Effect" optional>The registered <page>Effect</page> table, or `nil` if it doesn't exist.</ret>
+		<ret name="effectTbl" type="Effect" optional>The registered <page>EFFECT</page> table, or `nil` if it doesn't exist.</ret>
 	</rets>
 </function>

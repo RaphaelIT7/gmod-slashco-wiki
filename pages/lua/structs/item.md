@@ -1,4 +1,4 @@
-<title>Item</title>
+<title>ITEM</title>
 <structure>
 	<realm>Shared</realm>
 	<description>
@@ -8,7 +8,7 @@
 			Most callbacks below are looked up by name straight off the raw item table (`SlashCoItems[item].CallbackName`), not through a metatable, so only the exact names listed here are ever read by the framework.
 		</note>
 		<note>
-			<page>Item#Screenspace</page>, <page>Item#PreDrawHalos</page>, <page>Item#Thirdperson</page>, <page>Item#OnFootstep</page>, <page>Item#CanBeSeen</page>, <page>Item#CanSeeFlashlights</page>, <page>Item#OnDie</page>, <page>Item#OnOwnerTakeDamage</page>, <page>Item#PreDropSecondary</page> and <page>Item#PrePickUpPrimary</page>/<page>Item#PrePickUpSecondary</page> are all resolved through dispatch functions that check the player's active effects first - see <page>Effect</page> for the equivalent fields on an effect table, which take priority over an item's when both define the same one.
+			<page>ITEM#Screenspace</page>, <page>ITEM#PreDrawHalos</page>, <page>ITEM#Thirdperson</page>, <page>ITEM#OnFootstep</page>, <page>ITEM#CanBeSeen</page>, <page>ITEM#CanSeeFlashlights</page>, <page>ITEM#OnDie</page>, <page>ITEM#OnOwnerTakeDamage</page>, <page>ITEM#PreDropSecondary</page> and <page>ITEM#PrePickUpPrimary</page>/<page>ITEM#PrePickUpSecondary</page> are all resolved through dispatch functions that check the player's active effects first - see <page>EFFECT</page> for the equivalent fields on an effect table, which take priority over an item's when both define the same one.
 		</note>
 	</description>
 	<fields>
@@ -89,7 +89,7 @@
 		</item>
 		<item name="Precache" type="function" optional>
 			`function()`<br>
-			Called by <page>SlashCo.PrecacheItem</page>, in addition to the automatic precaching of <page>Item#Model</page>. Use it to precache any extra models/sounds/materials this item needs.
+			Called by <page>SlashCo.PrecacheItem</page>, in addition to the automatic precaching of <page>ITEM#Model</page>. Use it to precache any extra models/sounds/materials this item needs.
 		</item>
 		<item name="MaxAllowed" type="function" optional>
 			`function() -> number`<br>
@@ -138,11 +138,11 @@
 		</item>
 		<item name="OnFuel" type="function" optional>
 			`function(ply, generator)`<br>
-			Dispatched via <page>Player:SecondaryItemFunction</page> (so an active effect's `OnFuel` would take priority) when this <page>Item#IsFuel</page> secondary item is poured into a `sc_generator`. Not currently used by any shipped item.
+			Dispatched via <page>Player:SecondaryItemFunction</page> (so an active effect's `OnFuel` would take priority) when this <page>ITEM#IsFuel</page> secondary item is poured into a `sc_generator`. Not currently used by any shipped item.
 		</item>
 		<item name="OnBattery" type="function" optional>
 			`function(ply, generator)`<br>
-			Dispatched the same way as <page>Item#OnFuel</page>, when this <page>Item#IsBattery</page> secondary item is installed into a `sc_generator`. Not currently used by any shipped item.
+			Dispatched the same way as <page>ITEM#OnFuel</page>, when this <page>ITEM#IsBattery</page> secondary item is installed into a `sc_generator`. Not currently used by any shipped item.
 		</item>
 		<item name="OnUse" type="function" optional>
 			`function(ply) -> doNotRemove`<br>
@@ -162,7 +162,7 @@
 		</item>
 		<item name="PreDropSecondary" type="function" optional>
 			`function(ply, secondaryItem) -> dontDrop`<br>
-			Declared on the *primary* item; dispatched via <page>Player:ItemFunction</page> (so an active <page>Effect#PreDropSecondary</page> takes priority) right before the secondary item is dropped, letting the primary item veto it. `secondaryItem` is the name of the item about to be dropped.
+			Declared on the *primary* item; dispatched via <page>Player:ItemFunction</page> (so an active <page>EFFECT#PreDropSecondary</page> takes priority) right before the secondary item is dropped, letting the primary item veto it. `secondaryItem` is the name of the item about to be dropped.
 		</item>
 		<item name="OnDrop" type="function" optional>
 			`function(ply) -> height, dontDrop, dontPush`<br>
@@ -193,7 +193,7 @@
 		</item>
 		<item name="CanSeeFlashlights" type="function" optional>
 			`function(ply) -> canSee`<br>
-			Same dispatch as <page>Item#CanBeSeen</page>, but overrides whether the survivor holding this item can see other players' flashlights.
+			Same dispatch as <page>ITEM#CanBeSeen</page>, but overrides whether the survivor holding this item can see other players' flashlights.
 		</item>
 		<item name="OnFootstep" type="function" optional>
 			`function(ply) -> suppress`<br>

@@ -1,6 +1,6 @@
 <function name="SecondaryItemFunction" parent="Player" type="classfunc">
 	<description>
-		Calls the given callback function of the player's secondary item, checking their active effects first via <page>ItemFunctionInternal</page>.
+		Calls the given callback function of the player's secondary item, checking their active effects first via <page>Player:ItemFunctionInternal</page>.
 	</description>
 	<realm>Shared</realm>
 	<group>Items</group>

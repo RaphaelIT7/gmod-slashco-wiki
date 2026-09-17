@@ -1,6 +1,6 @@
 <function name="SlasherIsStunDeaf" parent="Player" type="classfunc">
 	<description>
-		Returns whether the player is currently deafened, as set by <page>SlasherStunDeafen</page>.
+		Returns whether the player is currently deafened, as set by <page>Player:SlasherStunDeafen</page>.
 	</description>
 	<realm>Shared</realm>
 	<group>Slasher</group>

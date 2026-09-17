@@ -1,6 +1,6 @@
 <function name="RemoveItem" parent="SlashCo" type="libraryfunc">
 	<description>
-		Clears the given item slot without spawning a dropped entity, calling the item's <page>Item#OnSwitchFrom</page> callback after a short delay.
+		Clears the given item slot without spawning a dropped entity, calling the item's <page>ITEM#OnSwitchFrom</page> callback after a short delay.
 	</description>
 	<realm>Server</realm>
 	<group>Items</group>

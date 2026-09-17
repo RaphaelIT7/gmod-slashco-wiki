@@ -8,6 +8,6 @@
 		<arg name="perkID" type="string">ID of the perk to retrieve</arg>
 	</args>
 	<rets>
-		<ret name="perkTbl" type="Perk">The registered <page>Perk</page> table or `nil` if the perk does not exist</ret>
+		<ret name="perkTbl" type="Perk">The registered <page>PERK</page> table or `nil` if the perk does not exist</ret>
 	</rets>
 </function>

@@ -29,7 +29,7 @@
 		<item name="Items" type="table" default="{}">Entity indexes of items that have been spawned or dropped this round.</item>
 		<item name="SlashersToBeSpawned" type="table" default="{}">Slashers still waiting to be spawned.</item>
 		<item name="Slashers" type="table" default="{}">
-			SteamID64-keyed table of the round's Slasher assignments, each entry having `SlasherID` and <page>Slasher#GasCanMod</page> - see <page>SlashCo.SelectSlasher</page>.
+			SteamID64-keyed table of the round's Slasher assignments, each entry having `SlasherID` and <page>SLASHER#GasCanMod</page> - see <page>SlashCo.SelectSlasher</page>.
 		</item>
 		<item name="GasCanCount" type="number" default="8">How many gas cans should be spawned this round.</item>
 		<item name="ItemCount" type="number" default="6">How many items should be spawned this round.</item>

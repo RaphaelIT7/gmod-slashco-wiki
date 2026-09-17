@@ -1,6 +1,6 @@
 <function name="EffectFunction" parent="Player" type="classfunc">
 	<description>
-		Calls the given callback function (e.g. <page>Effect#OnApplied</page>, <page>Effect#OnExpired</page>, <page>Effect#OnRemoved</page>) of one of the player's active effects, forwarding any extra arguments.<br>
+		Calls the given callback function (e.g. <page>EFFECT#OnApplied</page>, <page>EFFECT#OnExpired</page>, <page>EFFECT#OnRemoved</page>) of one of the player's active effects, forwarding any extra arguments.<br>
 		Does nothing if the player doesn't have that effect active, or the effect doesn't define the callback.
 	</description>
 	<realm>Shared</realm>

@@ -1,7 +1,7 @@
 <function name="SlasherHudFunc" parent="Player" type="classfunc">
 	<description>
 		Calls a function named `funcName` on the player's slasher HUD panel, on their client.<br>
-		Internally networks the call to the owning client via <page>SendValue</page>, which doesn't support keyed tables or materials as arguments.
+		Internally networks the call to the owning client via <page>SlashCo.SendValue</page>, which doesn't support keyed tables or materials as arguments.
 	</description>
 	<realm>Server</realm>
 	<group>Slasher</group>

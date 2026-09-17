@@ -1,6 +1,6 @@
 <function name="SlashCoItemPickUp" parent="" type="hook">
 	<description>
-		Called when a survivor is about to pick up a dropped item entity, after the basic slot/timing checks pass but before any item <page>Item#PrePickUp</page> callbacks run.<br>
+		Called when a survivor is about to pick up a dropped item entity, after the basic slot/timing checks pass but before any item <page>ITEM#PrePickUp</page> callbacks run.<br>
 		Return `true` to cancel the pickup.
 	</description>
 	<realm>Server</realm>

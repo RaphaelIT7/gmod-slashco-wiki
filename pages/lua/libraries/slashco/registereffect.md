@@ -6,7 +6,7 @@
 	<realm>Shared</realm>
 	<group>Items</group>
 	<args>
-		<arg name="table" type="Effect">The <page>Effect</page> table to register.</arg>
+		<arg name="table" type="Effect">The <page>EFFECT</page> table to register.</arg>
 		<arg name="name" type="string" optional>Name to register the effect under. Defaults to `table.Name`.</arg>
 	</args>
 </function>

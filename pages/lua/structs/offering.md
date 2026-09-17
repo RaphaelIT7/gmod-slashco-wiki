@@ -1,4 +1,4 @@
-<title>Offering</title>
+<title>OFFERING</title>
 <structure>
 	<realm>Shared</realm>
 	<description>

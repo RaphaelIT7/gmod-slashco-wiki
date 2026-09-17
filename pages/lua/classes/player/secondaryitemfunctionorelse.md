@@ -1,6 +1,6 @@
 <function name="SecondaryItemFunctionOrElse" parent="Player" type="classfunc">
 	<description>
-		Same as <page>SecondaryItemFunction</page>, but returns the given `fallback` table's values (unpacked) if the callback doesn't return a truthy value.
+		Same as <page>Player:SecondaryItemFunction</page>, but returns the given `fallback` table's values (unpacked) if the callback doesn't return a truthy value.
 	</description>
 	<realm>Shared</realm>
 	<group>Items</group>

@@ -776,7 +776,7 @@
 
 		protected function buildPageURL($page, $name)
 		{
-			// We allow linking to a specific field/item on a page like <page>Effect#FuelSpeed</page>
+			// We allow linking to a specific field/item on a page like <page>EFFECT#FuelSpeed</page>
 			// But we only care for the part before the # to resolve the page
 			$pageName = $page;
 			$fragment = null;
@@ -809,7 +809,7 @@
 				{
 					$html .= isset($file) ? Filesystem::GetTitleFromEntry($file) : FileSystem::SafeLink($pageName);
 					if ($fragment !== null && $fragment !== '')
-						$html .= '#' . $fragment;
+						$html .= '.' . $fragment;
 				}
 			$html .= '</a>';
 

@@ -1,7 +1,7 @@
 <function name="ItemPickUp" parent="SlashCo" type="libraryfunc">
 	<description>
 		Attempts to let a survivor pick up the item entity with the given `itemindex`.<br>
-		Fails silently if the target slot is occupied, the player recently dropped an item, a slot switch is already in progress, the <page>SlashCoItemPickUp</page> hook blocks it, the entity is flagged `DONTPICKUP`, or an item <page>Item#PrePickUp</page>/<page>Item#PrePickUpPrimary</page>/<page>Item#PrePickUpSecondary</page> callback blocks it.<br>
+		Fails silently if the target slot is occupied, the player recently dropped an item, a slot switch is already in progress, the <page>SlashCoItemPickUp</page> hook blocks it, the entity is flagged `DONTPICKUP`, or an item <page>ITEM#PrePickUp</page>/<page>ITEM#PrePickUpPrimary</page>/<page>ITEM#PrePickUpSecondary</page> callback blocks it.<br>
 		On success, equips the item via <page>SlashCo.ChangeSurvivorItem</page> and removes the world entity.
 	</description>
 	<realm>Server</realm>

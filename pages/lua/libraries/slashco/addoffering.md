@@ -5,6 +5,6 @@
 	<realm>Shared</realm>
 	<group>Lobby</group>
 	<args>
-		<arg name="offering" type="Offering">The table containing the offering data</arg>
+		<arg name="offering" type="OFFERING">The table containing the offering data</arg>
 	</args>
 </function>

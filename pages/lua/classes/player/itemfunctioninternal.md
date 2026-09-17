@@ -1,7 +1,7 @@
 <function name="ItemFunctionInternal" parent="Player" type="classfunc">
 	<description>
 		<internal></internal>
-		Internal helper used by <page>ItemFunction</page> and <page>SecondaryItemFunction</page>.<br>
+		Internal helper used by <page>Player:ItemFunction</page> and <page>Player:SecondaryItemFunction</page>.<br>
 		Calls the given callback on each of the player's active effects first; if none of them return a non-`nil` value, falls back to calling it on the item equipped in the given slot.
 	</description>
 	<realm>Shared</realm>

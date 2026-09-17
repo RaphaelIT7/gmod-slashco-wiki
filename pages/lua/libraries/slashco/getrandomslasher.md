@@ -10,6 +10,6 @@
 		<arg name="slasherClass" type="number" optional>A value from `SlashCo.SlasherClass` to restrict the pick to. Defaults to `SlashCo.SlasherClass.Unknown` (no restriction)</arg>
 	</args>
 	<rets>
-		<ret name="name" type="string">The name of a randomly picked matching slasher, see <page>GetSlasherTable</page></ret>
+		<ret name="name" type="string">The name of a randomly picked matching slasher, see <page>SlashCo.GetSlasherTable</page></ret>
 	</rets>
 </function>

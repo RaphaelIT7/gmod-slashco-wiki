@@ -6,7 +6,7 @@
 	</description>
 	<fields>
 		<item name="LOBBYSTATE" type="number" default="0">Internal progress step of the Lobby sequence (readying up, picking a Slasher, briefing, entering the helicopter, etc.).</item>
-		<item name="Offering" type="number" default="0">ID of the currently selected <page>Offering</page>, or `0` if none is selected.</item>
+		<item name="Offering" type="number" default="0">ID of the currently selected <page>OFFERING</page>, or `0` if none is selected.</item>
 		<item name="VotedOffering" type="number" default="0">ID of the Offering the current vote is deciding on.</item>
 		<item name="ButtonDoorPrimary" type="Entity" default="NULL">The Lobby's primary item-room door button.</item>
 		<item name="ButtonDoorPrimaryClose" type="Entity" default="NULL">The button that closes the primary item-room door.</item>

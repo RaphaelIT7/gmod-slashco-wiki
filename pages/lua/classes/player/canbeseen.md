@@ -2,7 +2,7 @@
 	<description>
 		Returns whether the player can currently be seen.<br>
 		Survivors and slashers may override visibility through their active item or slasher.<br>
-		Slasher visibility can also be disabled for spectators through the <page>Slasher#CannotBeSpectated</page> field.<br>
+		Slasher visibility can also be disabled for spectators through the <page>SLASHER#CannotBeSpectated</page> field.<br>
 		Spectators are always considered unseeable.<br>
 		If no override applies, the player's <page>Player:IsVisible</page> state is used.
 	</description>

@@ -1,9 +1,9 @@
-<title>Perk</title>
+<title>PERK</title>
 <structure>
 	<realm>Shared</realm>
 	<description>
 		Table structure used for <page>SlashCo.RegisterPerk</page>.<br>
-		Besides the fields below, a perk may define any number of additional numeric fields (e.g. <page>Item#FuelSpeed</page>) that are read through <page>Player:PerkValue</page> by whatever system the perk is meant to affect.
+		Besides the fields below, a perk may define any number of additional numeric fields (e.g. <page>ITEM#FuelSpeed</page>) that are read through <page>Player:PerkValue</page> by whatever system the perk is meant to affect.
 	</description>
 	<fields>
 		<item name="ID" type="string">The perk's unique ID, also passed as the second argument to <page>SlashCo.RegisterPerk</page>.</item>

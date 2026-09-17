@@ -1,6 +1,6 @@
 <function name="ItemFunctionOrElse" parent="Player" type="classfunc">
 	<description>
-		Same as <page>ItemFunction</page>, but returns the given `fallback` table's values (unpacked) if the callback doesn't return a truthy value.
+		Same as <page>Player:ItemFunction</page>, but returns the given `fallback` table's values (unpacked) if the callback doesn't return a truthy value.
 	</description>
 	<realm>Shared</realm>
 	<group>Items</group>

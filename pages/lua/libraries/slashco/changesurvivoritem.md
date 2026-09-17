@@ -1,6 +1,6 @@
 <function name="ChangeSurvivorItem" parent="SlashCo" type="libraryfunc">
 	<description>
-		Equips the given item into the specified slot (forced to the secondary slot if the item is marked as secondary), calling its <page>Item#OnPickUp</page> callback and the previous item's <page>Item#OnSwitchFrom</page> callback.<br>
+		Equips the given item into the specified slot (forced to the secondary slot if the item is marked as secondary), calling its <page>ITEM#OnPickUp</page> callback and the previous item's <page>ITEM#OnSwitchFrom</page> callback.<br>
 		Plays an equip sound unless `noSound` is `true`. Passing `"none"` as `id` clears the slot instead.
 	</description>
 	<realm>Server</realm>
