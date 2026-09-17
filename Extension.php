@@ -1,6 +1,5 @@
 <?php
 	include('Parsedown.php');
-	include('utils.php');
 	include('filesystem.php');
 	include('LuaParser.php');
 

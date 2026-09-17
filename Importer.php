@@ -83,7 +83,9 @@
 			"Extension.php",
 			"mysql.php",
 			"config.php",
-			"filesystem.php"
+			"filesystem.php",
+			"LuaParser.php",
+			"Parsedown.php"
 		);
 		public function CheckPHP($file)
 		{
