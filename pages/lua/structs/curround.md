@@ -13,7 +13,7 @@
 		<item name="DisconnectedPlayers" type="table" default="{}">Players that disconnected during the round.</item>
 		<item name="AntiLoopSpawn" type="boolean" default="false">Safety flag used while selecting spawn points, to avoid infinite loops when no valid spawn can be found.</item>
 		<item name="OfferingData" type="table">
-			Data about the currently selected Offering, with the fields `CurrentOffering` (the Offering ID), `OfferingName`, <page>Offering#GasCanMod</page>, `Singularity`, `Duality` and `Satiation` (Offering-specific modifiers) and `ItemMod` (extra/fewer items to spawn).
+			Data about the currently selected Offering, with the fields `CurrentOffering` (the Offering ID), `OfferingName`, <page>OFFERING#GasCanMod</page>, `Singularity`, `Duality` and `Satiation` (Offering-specific modifiers) and `ItemMod` (extra/fewer items to spawn).
 		</item>
 		<item name="SlasherData" type="table">
 			Tracks who is playing, with the fields `AllSurvivors` and `AllSlashers` (all players loaded for the round, dead or alive) and `GameReadyToBegin`.

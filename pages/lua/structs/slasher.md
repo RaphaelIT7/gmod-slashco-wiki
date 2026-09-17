@@ -213,5 +213,8 @@
 		<item name="InitHud" type="function" realm="Client" optional>
 			Called with `(hudPanel)` (the `slashco_slasher_stockhud` panel) whenever the local player's Slasher HUD is (re)created. Use it together with <page>Player:SlasherHudFunc</page> to set up this Slasher's HUD controls/meters.
 		</item>
+		<item name="DrawHUD" type="function" realm="Client" optional>
+			Called with `(hudPanel)` (the same panel passed to <page>SLASHER#InitHud</page>) every frame from the <page>SlashCo:DrawHUD</page> hook while the local player is playing as this Slasher. Use it to draw this Slasher's HUD.
+		</item>
 	</fields>
 </structure>

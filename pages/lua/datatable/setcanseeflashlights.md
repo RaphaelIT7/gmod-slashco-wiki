@@ -2,7 +2,7 @@
 	<description>
 		Sets whether the player can see flashlights.<br>
 		The value is stored using the `SlashCoSeeFlashlights` networked boolean.<br>
-		Item and slasher overrides may still take precedence when using <page>Player.CanSeeFlashlights</page>.
+		Item and slasher overrides may still take precedence when using <page>Player:CanSeeFlashlights</page>.
 	</description>
 	<realm>Server</realm>
 	<args>

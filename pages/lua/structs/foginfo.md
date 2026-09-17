@@ -38,11 +38,11 @@
 		</item>
 		<item name="entity" type="Entity" optional>
 			Player entity targeted by player-specific fog.
-			Required when <page>FogInfo#fogType</page> is <page>SlashCo.FogType.PLAYER</page>.
+			Required when <page>FogInfo#fogType</page> is <page>SlashCo.FogType#SlashCo.FogType.PLAYER</page>.
 		</item>
 		<item name="team" type="number" optional>
 			Team targeted by team-specific fog.
-			Required when <page>FogInfo#fogType</page> is <page>SlashCo.FogType.TEAM</page>.
+			Required when <page>FogInfo#fogType</page> is <page>SlashCo.FogType#SlashCo.FogType.TEAM</page>.
 		</item>
 	</fields>
 </structure>
