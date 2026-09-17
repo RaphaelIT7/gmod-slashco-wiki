@@ -18,7 +18,7 @@ html > body {
   position: relative;
 }
 html > body a {
-  color: #0082ff;
+  color: #4d94ff;
   text-decoration: none;
 }
 html > body > .body {
@@ -34,14 +34,14 @@ html > body > .body > .content {
   flex-grow: 1;
   flex-direction: column;
   width: 100%;
-  background-color: #111111;
+  background-color: #191919;
 }
 html > body > .body > .content .content {
   flex-grow: 1;
   padding: 32px;
   padding-top: 0;
   transition: all ease-out 0.13s;
-  background-color: #111111;
+  background-color: #191919;
 }
 html > body > .body > .content .content.loading {
   opacity: 0.4;
@@ -51,10 +51,10 @@ html > body > .body > .content > .footer {
   padding: 32px;
   font-size: 11px;
   color: #777;
-  background-color: #111111;
+  background-color: #191919;
 }
 html > body > .body > .footer {
-  background-color: #111111;
+  background-color: #191919;
 }
 html > body > .footer {
   padding: 30px;
@@ -764,7 +764,7 @@ hr {
 }
 .member_line a.subject {
   font-weight: bolder !important;
-  color: #0013ff !important;
+  color: #7896d2 !important;
 }
 .member_line a.link-page {
   color: #497bea !important;
@@ -848,7 +848,7 @@ hr {
   overflow-x: hidden;
 }
 .markdown a {
-  color: #0082ff;
+  color: #4d94ff;
   font-weight: bold;
 }
 .markdown a[href*="//"]:after {
@@ -1308,9 +1308,11 @@ hr {
 }
 #sidebar .section > a:hover, #sidebar .section > a:focus, #sidebar .section > details.level1 > summary > div:hover, #sidebar .section > details.level1 > summary > div:focus {
   background-color: rgba(0, 130, 255, 0.5);
+  border-radius: 6px;
 }
 #sidebar .section > details.level1 > summary:focus {
   background-color: rgba(0, 130, 255, 0.5);
+  border-radius: 6px;
 }
 
 #sidebar details {
@@ -1351,10 +1353,12 @@ hr {
 #sidebar details > ul > li > a:hover, #sidebar details > ul > li > a:focus {
   color: #fff;
   background-color: rgba(0, 130, 255, 0.4);
+  border-radius: 6px;
 }
 #sidebar details > ul > li > a.active {
   background-color: #0082ff;
   color: #fff;
+  border-radius: 6px;
 }
 
 #sidebar details.level1 {
@@ -1418,10 +1422,12 @@ hr {
 #sidebar details.level1 > summary > a:hover, #sidebar details.level1 > summary > a:focus {
   background-color: rgba(0, 130, 255, 0.5);
   color: white;
+  border-radius: 6px;
 }
 #sidebar details.level1 > summary > a.active {
   background-color: #0082ff;
   color: #fff;
+  border-radius: 6px;
 }
 #sidebar details.level1 > summary > a:not([href]) {
   color: rgba(255, 255, 255, 0.5);
@@ -2149,7 +2155,7 @@ hr {
   color: #999;
 }
 .body > .footer > div > div ul li a:hover {
-  color: #0082ff;
+  color: #4d94ff;
 }
 .body > .footer > div > div ul li a.active {
   background-color: #0082ff;
@@ -2479,6 +2485,7 @@ input[type=submit], button, select, a.button {
   cursor: pointer;
   white-space: nowrap;
   padding: 4px 8px;
+  transition: background-color 0.12s ease-out;
 }
 input[type=submit].primary, button.primary, select.primary, a.button.primary {
   background-color: #0082ff;
